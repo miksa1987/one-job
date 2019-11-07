@@ -20,8 +20,6 @@ const App = observer(() => {
       store.setUser(JSON.parse(storedUser));
       getAllTodosByUser();
     }
-    console.log(store.date);
-    console.log(store.todo);
   }, [store.date]);
 
   const getAllTodosByUser = async () => {
@@ -58,8 +56,6 @@ const App = observer(() => {
     });
     return found;
   }
-
-
   
   if (!store.user.uid) {
     return (

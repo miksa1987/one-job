@@ -13,8 +13,8 @@ const SetTodoTime = (props) => {
   return (
     <CenteredDiv>
       <TodoTimeBase>
-        <MarginlessInput />
-        <MarginlessInput />
+        <MarginlessInput {...props.hours}/>
+        <MarginlessInput {...props.minutes}/>
         <MarginlessButton>Set</MarginlessButton>
       </TodoTimeBase>
     </CenteredDiv>

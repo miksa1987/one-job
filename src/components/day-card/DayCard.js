@@ -20,15 +20,32 @@ const CardBase = styled.div`
 const DayCard = observer(() => {
   const [ todoText, setTodoText ] = useField('text');
   const [ reflectText, setReflectText ] = useField('text');
+  const [ timeHours, setTimeHours ] = useField('hours');
+  const [ timeMinutes, setTimeMinutes ] = useField('minutes');
 
   const store = React.useContext(TodoStore);
   const firebase = React.useContext(Firebase);
   const currentTodo = store.todo;
 
+  const [todoTimeNotPassed, setTodoTimePassed] = React.useState(true);
+
   React.useEffect(() => {
     if (currentTodo) {
+      const hours = currentTodo.time ? currentTodo.time[0] : 12;
+      const minutes = currentTodo.time ? currentTodo.time[1] : 0;
+
       setTodoText(currentTodo.task);
       setReflectText(currentTodo.reflect);
+      setTimeHours(hours);
+      setTimeMinutes(minutes);
+
+      const currentTime = moment();
+      const todoTimeString = `${currentTime.format('YYYY-MM-DD-')}-${hours}-${minutes}`;
+      const todoTime = moment(todoTimeString, 'YYYY-MM-DD-H-m');
+
+      if (currentTime.isAfter(todoTime)) {
+        setTodoTimePassed(false);
+      }
     }
   }, [currentTodo]);
 
@@ -36,7 +53,8 @@ const DayCard = observer(() => {
     const newTodo = {
       task: todoText.value,
       reflect: reflectText.value,
-      date: moment(store.date, 'YYYY-MM-DD').format('YYYY-MM-DD')
+      date: moment(store.date, 'YYYY-MM-DD').format('YYYY-MM-DD'),
+      time: [timeHours.value, timeMinutes.value]
     }
     const key = currentTodo.key || null
     await firebase.saveTodo(newTodo, key);
@@ -46,8 +64,8 @@ const DayCard = observer(() => {
     <CardBase>
       <H2>Today<button onClick={saveTodo}>save [TEMPORARY SOLUTION]</button></H2>
       <textarea {...todoText} />
-      <textarea {...reflectText} />      
-      <SetTodoTime />
+      <textarea {...reflectText} readOnly={todoTimeNotPassed} />      
+      <SetTodoTime hours={timeHours} minutes={timeMinutes} />
     </CardBase>
   );
 });
