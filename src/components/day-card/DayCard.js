@@ -13,9 +13,8 @@ const CardBase = styled.div`
   grid-template: 4rem 1fr 1fr 4rem / 100%;
   justify-content: center;
   background-color: #eceff4;
-  border-bottom: 1px solid #c8cee9;
   padding: 5px;
-  margin-top: 15%;
+  margin-top: 10%;
   flex-basis: 80%;
   height: 60vh;
   box-sizing: border-box;
@@ -40,25 +39,42 @@ const DayCard = observer(() => {
 
   React.useEffect(() => {
     if (currentTodo) {
-      const hours = currentTodo.time ? currentTodo.time[0] : 12;
-      const minutes = currentTodo.time ? currentTodo.time[1] : 0;
-
-      setTodoText(currentTodo.task);
-      setReflectText(currentTodo.reflect);
-      setTimeHours(hours);
-      setTimeMinutes(minutes);
-
-      const currentTime = moment();
-      const todoTimeString = `${currentTime.format('YYYY-MM-DD-')}-${hours}-${minutes}`;
-      const todoTime = moment(todoTimeString, 'YYYY-MM-DD-H-m');
-
-      if (currentTime.isAfter(todoTime)) {
-        setTodoTimePassed(false);
-      }
+      setTodoTexts();
+      setReminderTimeFromTodo();
+      seeIfTodoTimeIsPassed();
     }
   }, [currentTodo]);
 
-  const saveTodo = async () => {
+  const setTodoTexts = () => {
+    setTodoText(currentTodo.task);
+    setReflectText(currentTodo.reflect);
+  }
+
+  const setReminderTimeFromTodo = () => {  
+    const [ hours, minutes ] = getHoursAndMinutesFromTodo();
+    setTimeHours(hours);
+    setTimeMinutes(minutes);
+  }
+
+  const seeIfTodoTimeIsPassed = () => {
+    const [ hours, minutes ] = getHoursAndMinutesFromTodo();
+    const currentTime = moment();
+    const todoTimeString = `${currentTime.format('YYYY-MM-DD-')}-${hours}-${minutes}`;
+    const todoTime = moment(todoTimeString, 'YYYY-MM-DD-H-m');
+
+    if (currentTime.isAfter(todoTime)) {
+      setTodoTimePassed(false);
+    }
+  }
+
+  const getHoursAndMinutesFromTodo = () => {
+    const hours = currentTodo.time ? currentTodo.time[0] : 12;
+    const minutes = currentTodo.time ? currentTodo.time[1] : 0;
+
+    return [ hours, minutes ];
+  }
+
+  const saveTodo = () => {
     const newTodo = {
       task: todoText.value,
       reflect: reflectText.value,
@@ -66,7 +82,8 @@ const DayCard = observer(() => {
       time: [timeHours.value, timeMinutes.value]
     }
     const key = currentTodo.key || null
-    await firebase.saveTodo(newTodo, key);
+    
+    firebase.saveTodo(newTodo, key);
   }
 
   return (
