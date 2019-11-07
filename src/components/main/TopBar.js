@@ -13,6 +13,10 @@ const BaseLayout = styled.div`
   align-items: center;
   background-color: #e5e9f0;
   border-bottom: 1px solid #c8cee9;
+  position: fixed;
+  top: 0px;
+  height: 4rem;
+  width: 100%;
 `;
 
 const TopBar = () => {
@@ -27,7 +31,7 @@ const TopBar = () => {
   
   return (
     <BaseLayout>
-      <h1>Header</h1>
+      <h1>One job app</h1>
       <IconButton onClick={logoutUser}>
         <LogoutSVG color='#2e3440' />
       </IconButton>

@@ -10,11 +10,20 @@ import { H2 } from '../common/Headers';
 
 const CardBase = styled.div`
   display: grid;
-  grid-template: 3rem 6rem 6rem 4rem / 80vh;
+  grid-template: 4rem 1fr 1fr 4rem / 100%;
   justify-content: center;
   background-color: #eceff4;
   border-bottom: 1px solid #c8cee9;
-  padding: 10px;
+  padding: 5px;
+  margin-top: 15%;
+  flex-basis: 80%;
+  height: 60vh;
+  box-sizing: border-box;
+
+  @media screen and (max-width: 600px) {
+    margin-top: 25%;
+    height: 70vh;
+  }
 `;
 
 const DayCard = observer(() => {
@@ -62,10 +71,10 @@ const DayCard = observer(() => {
 
   return (
     <CardBase>
-      <H2>Today<button onClick={saveTodo}>save [TEMPORARY SOLUTION]</button></H2>
-      <textarea {...todoText} />
-      <textarea {...reflectText} readOnly={todoTimeNotPassed} />      
-      <SetTodoTime hours={timeHours} minutes={timeMinutes} />
+      <H2>What's your one job today?</H2>
+      <textarea {...todoText} onBlur={saveTodo} />
+      <textarea {...reflectText} readOnly={todoTimeNotPassed} onBlur={saveTodo} />      
+      <SetTodoTime hours={timeHours} minutes={timeMinutes} onBlur={saveTodo} />
     </CardBase>
   );
 });

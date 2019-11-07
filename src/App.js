@@ -1,7 +1,6 @@
 import React from 'react';
-import Layout from './components/main/Layout';
 import TopBar from './components/main/TopBar';
-import CardContainer from './components/main/CardContainer';
+import CenteredDiv from './components/common/CenteredDiv';
 import BottomBar from './components/main/BottomBar';
 import DayCard from './components/day-card/DayCard';
 import Intro from './components/intro/Intro';
@@ -64,13 +63,11 @@ const App = observer(() => {
   }
 
   return (
-    <Layout>
+    <CenteredDiv>
       <TopBar />
-      <CardContainer>
-        <DayCard />
-      </CardContainer>
+      <DayCard />
       <BottomBar />
-    </Layout>
+    </CenteredDiv>
   );
 });
 

@@ -8,6 +8,10 @@ const Base = styled.div`
   align-items: center;
   background-color: #e5e9f0;
   border-top: 1px solid #c8cee9;
+  position: fixed;
+  bottom: 0px;
+  height: 4rem;
+  width: 100%;
 `;
 
 const BottomBar = (props) => {
