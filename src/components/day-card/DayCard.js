@@ -88,9 +88,9 @@ const DayCard = observer(() => {
 
   return (
     <CardBase>
-      <H2>What's your one job today?</H2>
-      <textarea {...todoText} onBlur={saveTodo} />
-      <textarea {...reflectText} readOnly={todoTimeNotPassed} onBlur={saveTodo} />      
+      <H2>What is your one job today?</H2>
+      <textarea id='todo-text' {...todoText} onBlur={saveTodo} />
+      <textarea id='reflect-text' {...reflectText} readOnly={todoTimeNotPassed} onBlur={saveTodo} />      
       <SetTodoTime hours={timeHours} minutes={timeMinutes} onBlur={saveTodo} />
     </CardBase>
   );

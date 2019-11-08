@@ -26,7 +26,6 @@ const Loginform = (props) => {
     store.setUser(user);
     window.localStorage.setItem('onejob-user', JSON.stringify(user));
 
-
     setEmail('');
     setPassword('');
     props.setView('buttons');
@@ -34,9 +33,9 @@ const Loginform = (props) => {
 
   return (
     <Form onSubmit={loginUser}>
-      <input placeholder='Your e-mail' {...email} />
-      <input placeholder='Your password' {...password} />
-      <button>Log in</button>
+      <input id='email' placeholder='Your e-mail' {...email} />
+      <input id='password' placeholder='Your password' {...password} />
+      <button id='log-in'>Log in</button>
     </Form>
   );
 }

@@ -32,7 +32,7 @@ const TopBar = () => {
   return (
     <BaseLayout>
       <h1>One job app</h1>
-      <IconButton onClick={logoutUser}>
+      <IconButton id='log-out' onClick={logoutUser}>
         <LogoutSVG color='#2e3440' />
       </IconButton>
     </BaseLayout>

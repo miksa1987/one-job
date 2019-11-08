@@ -30,8 +30,8 @@ const App = observer(() => {
       const todoObjectWithKey = { ...todosObject[key], key: key }
       todos.push(todoObjectWithKey);
     });
+    
     store.setAllTodos(todos);
-
     setCurrentTodo(todos);
   } 
 

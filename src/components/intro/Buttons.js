@@ -11,8 +11,8 @@ const ButtonBase = styled.div`
 const Buttons = (props) => {
   return (
     <ButtonBase>
-      <button onClick={() => props.setView('login')}>Log in</button>
-      <button onClick={() => props.setView('newuser')}>New user</button>
+      <button onClick={() => props.setView('login')} id='login'>Log in</button>
+      <button onClick={() => props.setView('newuser')} id='new-user'>New user</button>
     </ButtonBase>
   );
 }

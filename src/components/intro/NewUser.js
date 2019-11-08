@@ -35,10 +35,10 @@ const NewUserform = (props) => {
   return (
     <div>
     <Form onSubmit={createUser}>
-      <input placeholder='Your e-mail' {...email} />
-      <input placeholder='Desired password' {...password} />
-      <input placeholder='Repeat password' {...repeatPassword} />
-      <button type='submit'>
+      <input id='email' placeholder='Your e-mail' {...email} />
+      <input id='password' placeholder='Desired password' {...password} />
+      <input id='repeat-password' placeholder='Repeat password' {...repeatPassword} />
+      <button id='create-user' type='submit'>
         Create new user
       </button>
     </Form>
