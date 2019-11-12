@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import SetTodoTime from './SetTodoTime';
 import TodoStore from '../../store';
-import Firebase from '../../firebase/firebase';
 import useField from '../../hooks/useField';
 import moment from 'moment';
 import { observer } from 'mobx-react-lite';
@@ -32,9 +31,9 @@ const DayCard = observer(() => {
   const [ timeMinutes, setTimeMinutes ] = useField('minutes');
 
   const store = React.useContext(TodoStore);
-  const firebase = React.useContext(Firebase);
   const currentTodo = store.todo;
 
+  console.log(currentTodo)
   const [todoTimeNotPassed, setTodoTimePassed] = React.useState(true);
 
   React.useEffect(() => {
@@ -83,7 +82,7 @@ const DayCard = observer(() => {
     }
     const key = currentTodo.key || null
     
-    firebase.saveTodo(newTodo, key);
+    store.saveTodo(newTodo, key);
   }
 
   return (

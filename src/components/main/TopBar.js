@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import IconButton from '../common/IconButton';
 import TodoStore from '../../store';
-import Firebase from '../../firebase/firebase';
 import { ReactComponent as LogoutSVG } from './log-out.svg';
 
 const BaseLayout = styled.div`
@@ -21,12 +20,9 @@ const BaseLayout = styled.div`
 
 const TopBar = () => {
   const store = React.useContext(TodoStore);
-  const firebase = React.useContext(Firebase);
-
   const logoutUser = () => {
     window.localStorage.clear();
-    store.setUser({});
-    firebase.logoutUser();
+    store.logoutUser();
   }
   
   return (

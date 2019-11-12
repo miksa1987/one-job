@@ -1,7 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
-import { createContext } from 'react';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -14,7 +13,7 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
-export class Firebase {
+export default class Firebase {
   constructor() {
     firebase.initializeApp(firebaseConfig);
     this.auth = firebase.auth();
@@ -66,5 +65,3 @@ export class Firebase {
     return todosSnapshot.val();
   }
 }
-
-export default createContext(new Firebase());

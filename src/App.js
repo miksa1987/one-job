@@ -5,55 +5,23 @@ import BottomBar from './components/main/BottomBar';
 import DayCard from './components/day-card/DayCard';
 import Intro from './components/intro/Intro';
 import TodoStore from './store';
-import Firebase from './firebase/firebase';
 import { observer } from 'mobx-react-lite';
 
 const App = observer(() => {
   const store = React.useContext(TodoStore);
-  const firebase = React.useContext(Firebase);
 
   React.useEffect(() => {
     const storedUser = window.localStorage.getItem('onejob-user');
 
     if (storedUser) {
       store.setUser(JSON.parse(storedUser));
-      getAllTodosByUser();
+      checkTodos();
     }
   }, [store.date]);
 
-  const getAllTodosByUser = async () => {
-    const todosObject = await firebase.getTodos(store.user.uid) || {};
-    let todos = [];
-    
-    const todosObjectKeys = Object.keys(todosObject);
-    todosObjectKeys.forEach((key) => {
-      const todoObjectWithKey = { ...todosObject[key], key: key }
-      todos.push(todoObjectWithKey);
-    });
-    
-    store.setAllTodos(todos);
-    setCurrentTodo(todos);
-  } 
-
-  const setCurrentTodo = (todos) => {
-    const filteredTodos = todos.filter((todo) => todo.date === store.date);
-    
-    if (checkForTodo(store.date)) {
-      store.setCurrentTodo(filteredTodos[0]);
-    }
-    else {
-      store.setCurrentTodo({date: store.date, task: '', reflect: ''});
-    }
-  }
-
-  const checkForTodo = (date) => {
-    let found = false;
-    store.allTodos.forEach((todo) => {
-      if (todo.date === date) {
-        found = true;
-      }
-    });
-    return found;
+  const checkTodos = async () => {
+    await store.getAndSetTodos();
+    await store.setCurrentTodo();
   }
   
   if (!store.user.uid) {

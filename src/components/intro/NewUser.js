@@ -1,7 +1,6 @@
 import React from 'react';
 import Form from '../common/Form';
 import useField from '../../hooks/useField';
-import Firebase from '../../firebase/firebase';
 import TodoStore from '../../store';
 
 const NewUserform = (props) => {
@@ -10,20 +9,10 @@ const NewUserform = (props) => {
   const [ repeatPassword, setRepeatPassWord ] = useField('password');
 
   const store = React.useContext(TodoStore);
-  const firebase = React.useContext(Firebase);
 
   const createUser = async (event) => {
     event.preventDefault();
-    const response = await firebase.createNewUser(email.value, password.value);
-
-    const user = {
-      uid: response.uid,
-      email: response.email,
-      refreshtoken: response.refreshToken
-    };
-
-    store.setUser(user);
-    window.localStorage.setItem('onejob-user', JSON.stringify(user));
+    store.createAndSetUser(email.value, password.value, repeatPassword.value);
 
     setEmail('');
     setPassword('');
