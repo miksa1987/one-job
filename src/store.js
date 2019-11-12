@@ -99,6 +99,10 @@ class TodoStore {
     this.currentUser = user;
   }
 
+  setCurrentDate = (date) => {
+    this.currentDate = date;
+  }
+
   get user() {
     return this.currentUser;
   }
