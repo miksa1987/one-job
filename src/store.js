@@ -11,13 +11,13 @@ class TodoStore {
 
   firebase = new Firebase();
 
-  createAndSetUser = async (e_mail, password, repeatPassword) => {
+  createAndSetUser = async (email, password, repeatPassword) => {
     try {
       if (password !== repeatPassword) {
         throw new Error('Passwords do not match');
       }
 
-      const response = await this.firebase.loginUser(e_mail, password);
+      const response = await this.firebase.loginUser(email, password);
       this.currentUser = {
         uid: response.uid, 
         email: response.email,
@@ -39,10 +39,8 @@ class TodoStore {
         refreshtoken: response.refreshtoken
       };
       window.localStorage.setItem('onejob-user', JSON.stringify(this.currentUser));
-      console.log(this.currentUser)
     }
     catch (error) {
-      console.log(error.message)
       this.error = error.message;
     }
   }
@@ -50,6 +48,7 @@ class TodoStore {
   logoutUser = async () => {
     await this.firebase.logoutUser();
     this.user = {};
+    window.localStorage.clear();
   }
 
   getAndSetTodos = async () => {
@@ -76,6 +75,7 @@ class TodoStore {
         found = true;
       }
     });
+    
     return found;
   }
 

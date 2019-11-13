@@ -33,7 +33,6 @@ const DayCard = observer(() => {
   const store = React.useContext(TodoStore);
   const currentTodo = store.todo;
 
-  console.log(currentTodo)
   const [todoTimeNotPassed, setTodoTimePassed] = React.useState(true);
 
   React.useEffect(() => {
@@ -87,10 +86,10 @@ const DayCard = observer(() => {
 
   return (
     <CardBase>
-      <H2>What is your one job today?</H2>
+      <H2 id='one-job-text'>What is your one job today?</H2>
       <textarea id='todo-text' {...todoText} onBlur={saveTodo} />
       <textarea id='reflect-text' {...reflectText} readOnly={todoTimeNotPassed} onBlur={saveTodo} />      
-      <SetTodoTime hours={timeHours} minutes={timeMinutes} onBlur={saveTodo} />
+      <SetTodoTime hours={timeHours} minutes={timeMinutes} saveTodo={saveTodo} />
     </CardBase>
   );
 });

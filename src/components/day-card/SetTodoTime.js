@@ -15,7 +15,9 @@ const SetTodoTime = (props) => {
       <TodoTimeBase>
         <MarginlessInput id='todo-time-hours' {...props.hours}/>
         <MarginlessInput id='todo-time-minutes' {...props.minutes}/>
-        <MarginlessButton>Set</MarginlessButton>
+        <MarginlessButton id='todo-time-set' onClick={props.saveTodo}>
+          Set
+        </MarginlessButton>
       </TodoTimeBase>
     </CenteredDiv>
   );

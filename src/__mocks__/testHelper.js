@@ -1,0 +1,1 @@
+export const saveTodoMock = jest.fn();
