@@ -50,12 +50,12 @@ const DateChanger = observer(() => {
 
   return (
     <DateChangerBase>
-        <MarginlessButton id='previous-day' onClick={previousDay}>{'<'}</MarginlessButton>
-        <MarginlessInput id='date-day' {...day} />
-        <MarginlessInput id='date-month' {...month} />
-        <MarginlessInput id='date-year' {...year} />
-        <MarginlessButton id='next-day' onClick={nextDay}>{'>'}</MarginlessButton>
-        <MarginlessButton id='current-date' onClick={currentDay}>Current date</MarginlessButton>
+      <MarginlessButton id='previous-day' onClick={previousDay}>{'<'}</MarginlessButton>
+      <MarginlessInput id='date-day' {...day} />
+      <MarginlessInput id='date-month' {...month} />
+      <MarginlessInput id='date-year' {...year} />
+      <MarginlessButton id='next-day' onClick={nextDay}>{'>'}</MarginlessButton>
+      <MarginlessButton id='current-date' onClick={currentDay}>Current date</MarginlessButton>
     </DateChangerBase>
   );
 });

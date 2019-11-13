@@ -1,6 +1,6 @@
 import { decorate, computed, observable } from 'mobx';
 import { createContext } from 'react';
-import { saveTodoMock } from './testHelper';
+import { saveTodoMock, setCurrentDateMock } from './testHelper';
 
 class TodoStore {
   currentTodo = {
@@ -10,6 +10,12 @@ class TodoStore {
     time: [ 12, 0 ],
     key: '1'
   };
+  currentDate = '';
+
+  setCurrentDate = (date) => {
+    setCurrentDateMock();
+    this.currentDate = date;
+  }
 
   saveTodo = (newTodo, key) => {
     saveTodoMock();

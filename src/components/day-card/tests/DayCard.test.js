@@ -21,7 +21,9 @@ describe('DayCard', () => {
   });
 
   test('Todo text gets saved(saveTodo is called)', () => {
+    saveTodoMock.mockClear();
     const component = render(<DayCard />);
+    
     const todoText = component.container.querySelector('#todo-text');
     const reflectText = component.container.querySelector('#reflect-text');
 
@@ -34,7 +36,9 @@ describe('DayCard', () => {
   });
   
   test('Reflect text gets saved(saveTodo is called)', () => {
+    saveTodoMock.mockClear();
     const component = render(<DayCard />);
+    
     const todoText = component.container.querySelector('#todo-text');
     const reflectText = component.container.querySelector('#reflect-text');
 
@@ -43,18 +47,19 @@ describe('DayCard', () => {
     fireEvent.focus(todoText);
     fireEvent.blur(reflectText);
 
-    expect(saveTodoMock.mock.calls.length).toBe(2);
+    expect(saveTodoMock.mock.calls.length).toBe(1);
   });
 
   test('Set reminder time saves the todo', () => {
+    saveTodoMock.mockClear();
     const component = render(<DayCard />);
+    
     const timeHours = component.container.querySelector('#todo-time-hours');
-    const timeMinutes = component.container.querySelector('#todo-time-minutes');
     const setTime = component.container.querySelector('#todo-time-set');
 
     fireEvent.change(timeHours, { target: { value: 23 } });
     fireEvent.click(setTime);
 
-    expect(saveTodoMock.mock.calls.length).toBe(3);
+    expect(saveTodoMock.mock.calls.length).toBe(1);
   });
 });
