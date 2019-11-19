@@ -4,6 +4,7 @@ import CenteredDiv from './components/common/CenteredDiv';
 import BottomBar from './components/main/BottomBar';
 import DayCard from './components/day-card/DayCard';
 import Intro from './components/intro/Intro';
+import Notification from './components/notification/Notification';
 import TodoStore from './store';
 import { observer } from 'mobx-react-lite';
 
@@ -26,7 +27,10 @@ const App = observer(() => {
   
   if (!store.user.uid) {
     return (
-      <Intro />
+      <div>
+        <Intro />
+        <Notification message={store.notification} visible={store.notificationVisible} />
+      </div>
     );
   }
 
@@ -35,6 +39,7 @@ const App = observer(() => {
       <TopBar />
       <DayCard />
       <BottomBar />
+      <Notification message={store.notification} visible={store.notificationVisible} />
     </CenteredDiv>
   );
 });

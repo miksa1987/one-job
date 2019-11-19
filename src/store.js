@@ -3,11 +3,13 @@ import { createContext } from 'react';
 import Firebase from './firebase/firebase';
 
 class TodoStore {
-  currentUser = { username: 'nulluu' };
+  currentUser = { username: '' };
   currentTodo = {};
   currentDate = new Date();
   todos = [];
   error = '';
+  currentNotification = '';
+  notificationVisible = false;
 
   firebase = new Firebase();
 
@@ -103,6 +105,15 @@ class TodoStore {
     this.currentDate = date;
   }
 
+  setNotification = (message, timeout) => {
+    this.currentNotification = message;
+    this.notificationVisible = true;
+    setTimeout(() => {
+      this.currentNotification = '';
+      this.notificationVisible = false;
+    }, timeout * 1000);
+  }
+
   get user() {
     return this.currentUser;
   }
@@ -118,17 +129,29 @@ class TodoStore {
   get allTodos() {
     return this.todos;
   }
+
+  get notificationIsVisible() {
+    return this.notificationVisible;
+  }
+
+  get notification() {
+    return this.currentNotification;
+  }
 }
 
 decorate(TodoStore, {
   currentUser: observable,
   currentTodo: observable,
   currentDate: observable,
+  currentNotification: observable,
+  notificationIsVisible: observable,
   todos: observable,
   user: computed,
   todo: computed,
   date: computed,
-  allTodos: computed
+  allTodos: computed,
+  notification: computed,
+  notificationIsVisible: computed
 });
 
 export default createContext(new TodoStore());
