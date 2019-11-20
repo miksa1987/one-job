@@ -39,7 +39,7 @@ const App = observer(() => {
       <TopBar />
       <DayCard />
       <BottomBar />
-      <Notification message={store.notification} visible={store.notificationVisible} />
+      <Notification message={store.notification} visible={store.notificationIsVisible} />
     </CenteredDiv>
   );
 });

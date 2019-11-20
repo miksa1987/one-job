@@ -13,6 +13,7 @@ const NewUserform = (props) => {
   const createUser = async (event) => {
     event.preventDefault();
     store.createAndSetUser(email.value, password.value, repeatPassword.value);
+    store.setNotification('User created. You are now logged in.');
 
     setEmail('');
     setPassword('');

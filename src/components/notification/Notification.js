@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const NotificationBase = styled.div`
-  display: ${props => props.visible ? 'flex' : 'none'};
+  display: ${props => props.message !== '' ? 'flex' : 'none'};
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.3);
@@ -16,14 +16,9 @@ const NotificationBase = styled.div`
 `;
 
 const Notification = (props) => {
-  const [message, setMessage] = React.useState('');
-
-  React.useEffect(() => {
-    setMessage(props.message);
-  }, [props.message, props.visible]);
   return (
-    <NotificationBase visible={props.visible}>
-      <p>{message}</p>
+    <NotificationBase message={props.message}>
+      <p>{props.message}</p>
     </NotificationBase>
   )
 }

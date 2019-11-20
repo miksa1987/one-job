@@ -20,11 +20,16 @@ const BaseLayout = styled.div`
 
 const TopBar = () => {
   const store = React.useContext(TodoStore);
+
+  const logOut = () => {
+    store.logoutUser();
+    store.setNotification('You have logged out.');
+  }
   
   return (
     <BaseLayout>
       <h1>One job app</h1>
-      <IconButton id='log-out' onClick={store.logoutUser}>
+      <IconButton id='log-out' onClick={logOut}>
         <LogoutSVG color='#2e3440' />
       </IconButton>
     </BaseLayout>

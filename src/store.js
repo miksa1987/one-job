@@ -9,8 +9,7 @@ class TodoStore {
   todos = [];
   error = '';
   currentNotification = '';
-  notificationVisible = false;
-
+  
   firebase = new Firebase();
 
   createAndSetUser = async (email, password, repeatPassword) => {
@@ -49,7 +48,7 @@ class TodoStore {
 
   logoutUser = async () => {
     await this.firebase.logoutUser();
-    this.user = {};
+    this.currentUser = {};
     window.localStorage.clear();
   }
 
@@ -105,13 +104,12 @@ class TodoStore {
     this.currentDate = date;
   }
 
-  setNotification = (message, timeout) => {
+  setNotification = (message) => {
     this.currentNotification = message;
-    this.notificationVisible = true;
+    
     setTimeout(() => {
-      this.currentNotification = '';
-      this.notificationVisible = false;
-    }, timeout * 1000);
+      this.setNotification('');
+    }, 3000);
   }
 
   get user() {

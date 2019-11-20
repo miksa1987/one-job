@@ -13,6 +13,8 @@ const Loginform = (props) => {
     event.preventDefault();
 
     store.loginAndSetUser(email.value, password.value);
+    store.setNotification('Logged in.');
+
     setEmail('');
     setPassword('');
     props.setView('buttons');
