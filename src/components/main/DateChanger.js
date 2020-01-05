@@ -32,7 +32,6 @@ const DateChanger = observer(() => {
   const nextDay = () => {
     const nextDayDate = moment(store.date, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD');
     setDate(nextDayDate);
-    console.log(nextDayDate)
   }
 
   const currentDay = () => {

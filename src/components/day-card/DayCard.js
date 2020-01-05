@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import SetTodoTime from './SetTodoTime';
 import TodoStore from '../../store';
-import CenteredDiv from '../common/CenteredDiv';
 import useField from '../../hooks/useField';
 import moment from 'moment';
 import { observer } from 'mobx-react-lite';
@@ -35,7 +34,6 @@ const DayCard = observer(() => {
   const currentTodo = store.todo;
 
   const [todoTimeNotPassed, setTodoTimePassed] = React.useState(true);
-  const reflectPlaceholder = todoTimeNotPassed ? '' : 'How did it feel?'
 
   React.useEffect(() => {
     if (currentTodo) {
@@ -89,12 +87,9 @@ const DayCard = observer(() => {
   return (
     <CardBase>
       <H2 id='one-job-text'>What is your one job today?</H2>
-      <textarea id='todo-text' {...todoText} onBlur={saveTodo} placeholder='Describe your one job in detail' />
-      <textarea id='reflect-text' {...reflectText} readOnly={todoTimeNotPassed} onBlur={saveTodo} placeholder={reflectPlaceholder} /> 
-      <CenteredDiv> 
-        <strong>Set time for it: </strong>    
-        <SetTodoTime hours={timeHours} minutes={timeMinutes} saveTodo={saveTodo} />
-      </CenteredDiv>
+      <textarea id='todo-text' {...todoText} onBlur={saveTodo} />
+      <textarea id='reflect-text' {...reflectText} readOnly={todoTimeNotPassed} onBlur={saveTodo} />      
+      <SetTodoTime hours={timeHours} minutes={timeMinutes} saveTodo={saveTodo} />
     </CardBase>
   );
 });

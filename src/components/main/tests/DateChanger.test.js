@@ -14,12 +14,6 @@ const renderAndGetComponentAndDate = () => {
   const month = component.container.querySelector('#date-month');
   const year = component.container.querySelector('#date-year');
 
-  date = [ 
-    Number(day.value), 
-    Number(month.value), 
-    Number(year.value)
-  ];
-
   return [ component, day, month, year ];
 }
 
@@ -28,14 +22,38 @@ describe('DateChanger', () => {
 
   test('Date is rendered', () => {
     const [ component, day, month, year ] = renderAndGetComponentAndDate();
-    
+
     expect(day).toBeDefined();
     expect(month).toBeDefined();
     expect(year).toBeDefined();
+
+    date = [ 
+      Number(day.value), 
+      Number(month.value), 
+      Number(year.value)
+    ];
   });
 
-  test('Date can be changed backward and to current date', () => {
-    const [ component, day ] = renderAndGetComponentAndDate();
+  test('Date can be changed forward', () => {
+    const [ component, day, month, year ] = renderAndGetComponentAndDate();
+    
+    const nextDay = component.container.querySelector('#next-day');
+    fireEvent.click(nextDay);
+
+    expect(Number(day.value)).toBe(Number(date[0]) + 1);
+  });
+
+  test('Date can be changed backward', () => {
+    const [ component, day, month, year ] = renderAndGetComponentAndDate();
+    
+    const previousDay = component.container.querySelector('#previous-day');
+    fireEvent.click(previousDay);
+
+    expect(Number(day.value)).toBe(Number(date[0]) - 1);
+  });
+
+  test('Date can be changed backward', () => {
+    const [ component, day, month, year ] = renderAndGetComponentAndDate();
 
     const previousDay = component.container.querySelector('#previous-day');
     fireEvent.click(previousDay);
