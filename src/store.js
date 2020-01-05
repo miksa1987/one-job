@@ -1,6 +1,6 @@
 import { decorate, computed, observable } from 'mobx';
 import { createContext } from 'react';
-import Firebase from './firebase/firebase';
+import Database from './database/database';
 
 class TodoStore {
   currentUser = { username: '' };
@@ -10,7 +10,7 @@ class TodoStore {
   errorFlag = '';
   currentNotification = '';
   
-  firebase = new Firebase();
+  firebase = new Database();
 
   createAndSetUser = async (email, password, repeatPassword) => {
     try {
@@ -125,7 +125,7 @@ class TodoStore {
   }
 
   get todos() {
-    return this.todos;
+    return this.allTodos;
   }
 
   get notificationIsVisible() {
