@@ -6,8 +6,8 @@ class TodoStore {
   currentUser = { username: '' };
   currentTodo = {};
   currentDate = new Date();
-  todos = [];
-  error = '';
+  allTodos = [];
+  errorFlag = '';
   currentNotification = '';
   
   firebase = new Firebase();
@@ -42,7 +42,8 @@ class TodoStore {
       window.localStorage.setItem('onejob-user', JSON.stringify(this.currentUser));
     }
     catch (error) {
-      this.error = error.message;
+      this.setNotification(error.message);
+      this.errorFlag = true;
     }
   }
 
@@ -53,12 +54,11 @@ class TodoStore {
   }
 
   getAndSetTodos = async () => {
-    const allTodos = await this.makeTodosObjectToArray();
-    this.todos = allTodos;
+    this.allTodos = await this.makeTodosObjectToArray();
   } 
 
   setCurrentTodo = () => {
-    const filteredTodos = this.todos.filter((todo) => todo.date === this.currentDate);
+    const filteredTodos = this.allTodos.filter((todo) => todo.date === this.currentDate);
     
     if (this.checkForTodo(this.currentDate)) {
       this.currentTodo = filteredTodos[0];
@@ -71,7 +71,7 @@ class TodoStore {
 
   checkForTodo = () => {
     let found = false;
-    this.todos.forEach((todo) => {
+    this.allTodos.forEach((todo) => {
       if (todo.date === this.currentDate) {
         found = true;
       }
@@ -124,7 +124,7 @@ class TodoStore {
     return this.currentDate;
   }
 
-  get allTodos() {
+  get todos() {
     return this.todos;
   }
 
@@ -135,6 +135,10 @@ class TodoStore {
   get notification() {
     return this.currentNotification;
   }
+
+  get error() {
+    return this.errorFlag;
+  }
 }
 
 decorate(TodoStore, {
@@ -143,13 +147,14 @@ decorate(TodoStore, {
   currentDate: observable,
   currentNotification: observable,
   notificationIsVisible: observable,
-  todos: observable,
+  allTodos: observable,
   user: computed,
   todo: computed,
   date: computed,
-  allTodos: computed,
+  todos: computed,
   notification: computed,
-  notificationIsVisible: computed
+  notificationIsVisible: computed,
+  error: computed
 });
 
 export default createContext(new TodoStore());

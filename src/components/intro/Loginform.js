@@ -12,9 +12,11 @@ const Loginform = (props) => {
   const loginUser = async (event) => {
     event.preventDefault();
 
-    store.loginAndSetUser(email.value, password.value);
-    store.setNotification('Logged in.');
-
+    await store.loginAndSetUser(email.value, password.value);
+    if (!store.error) {
+      store.setNotification('Logged in.');
+    }
+    
     setEmail('');
     setPassword('');
     props.setView('buttons');

@@ -34,6 +34,10 @@ export default class Firebase {
 
   loginUser = async (email, password) => {
     await this.auth.signInWithEmailAndPassword(email, password);
+
+    if (this.auth.currentUser === null) {
+      throw new Error('Wrong email or password!')
+    }
     return this.auth.currentUser;
   }
 

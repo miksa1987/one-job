@@ -18,7 +18,7 @@ const App = observer(() => {
       store.setUser(JSON.parse(storedUser));
       checkTodos();
     }
-  }, [store.date]);
+  }, []);
 
   const checkTodos = async () => {
     await store.getAndSetTodos();

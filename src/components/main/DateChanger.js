@@ -9,7 +9,7 @@ import { observer } from 'mobx-react-lite';
 
 const DateChangerBase = styled.div`
   display: grid;
-  grid-template: 2rem / 3rem 3rem 3rem 6rem 3rem 6rem;
+  grid-template: 2rem / 3rem 3rem 3rem 6rem 3rem 10rem;
 `;
 
 const DateChanger = observer(() => {
