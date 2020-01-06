@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import SetTodoTime from './SetTodoTime';
-import TodoStore from '../../store';
+import TodoStore from '../../store/store';
 import useField from '../../hooks/useField';
 import moment from 'moment';
 import { observer } from 'mobx-react-lite';
@@ -30,8 +30,11 @@ const DayCard = observer(() => {
   const [ timeHours, setTimeHours ] = useField('hours');
   const [ timeMinutes, setTimeMinutes ] = useField('minutes');
 
+
   const store = React.useContext(TodoStore);
   const currentTodo = store.todo;
+
+  console.log(store.todos)
 
   const [todoTimeNotPassed, setTodoTimePassed] = React.useState(true);
 

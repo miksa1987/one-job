@@ -1,7 +1,7 @@
 import React from 'react';
 import Form from '../common/Form';
 import useField from '../../hooks/useField';
-import TodoStore from '../../store';
+import TodoStore from '../../store/store';
 
 const NewUserform = (props) => {
   const [ email, setEmail ] = useField('text');

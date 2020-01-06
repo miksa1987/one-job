@@ -13,7 +13,7 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
-export default class Firebase {
+export default class Database {
   constructor() {
     firebase.initializeApp(firebaseConfig);
     this.auth = firebase.auth();
@@ -34,6 +34,10 @@ export default class Firebase {
 
   loginUser = async (email, password) => {
     await this.auth.signInWithEmailAndPassword(email, password);
+
+    if (this.auth.currentUser === null) {
+      throw new Error('Wrong email or password!')
+    }
     return this.auth.currentUser;
   }
 

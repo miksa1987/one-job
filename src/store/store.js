@@ -1,60 +1,44 @@
 import { decorate, computed, observable } from 'mobx';
 import { createContext } from 'react';
-import Firebase from './firebase/firebase';
+import Database from '../database/database';
+import UserHandler from './user';
+import TodosHandler from './todos';
 
 class TodoStore {
   currentUser = { username: '' };
   currentTodo = {};
   currentDate = new Date();
   todos = [];
-  error = '';
   currentNotification = '';
   
-  firebase = new Firebase();
+  database = new Database();
+  userHandler = new UserHandler(this.database);
+  todosHandler = new TodosHandler(this.database);
 
   createAndSetUser = async (email, password, repeatPassword) => {
     try {
-      if (password !== repeatPassword) {
-        throw new Error('Passwords do not match');
-      }
-
-      const response = await this.firebase.loginUser(email, password);
-      this.currentUser = {
-        uid: response.uid, 
-        email: response.email,
-        refreshtoken: response.refreshtoken
-      };
-      window.localStorage.setItem('onejob-user', JSON.stringify(this.currentUser));
+      this.currentUser = await this.userHandler.createAndSetUser(email, password, repeatPassword);
     }
     catch (error) {
-      this.error = error.message;
+      this.setNotification(error.message);
     }
   } 
 
   loginAndSetUser = async (email, password) => {
     try {
-      const response = await this.firebase.loginUser(email, password);
-      this.currentUser = {
-        uid: response.uid, 
-        email: response.email,
-        refreshtoken: response.refreshtoken
-      };
-      window.localStorage.setItem('onejob-user', JSON.stringify(this.currentUser));
+      this.currentUser = await this.userHandler.loginAndSetUser(email, password);
     }
     catch (error) {
-      this.error = error.message;
+      this.setNotification(error.message);
     }
   }
 
   logoutUser = async () => {
-    await this.firebase.logoutUser();
-    this.currentUser = {};
-    window.localStorage.clear();
+    this.currentUser = await this.userHandler.logoutUser();
   }
 
   getAndSetTodos = async () => {
-    const allTodos = await this.makeTodosObjectToArray();
-    this.todos = allTodos;
+    this.todos = await this.makeTodosObjectToArray();
   } 
 
   setCurrentTodo = () => {
@@ -81,7 +65,7 @@ class TodoStore {
   }
 
   makeTodosObjectToArray = async () => {
-    const todosObject = await this.firebase.getTodos(this.currentUser.uid);
+    const todosObject = await this.database.getTodos(this.currentUser.uid);
     let todos = [];
     const todosObjectKeys = Object.keys(todosObject);
 
@@ -93,7 +77,7 @@ class TodoStore {
   }
 
   saveTodo = async (todoData, key) => {
-    this.firebase.saveTodo(todoData, key);
+    this.database.saveTodo(todoData, key);
   }
 
   setUser = (user) => {
