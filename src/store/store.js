@@ -1,64 +1,48 @@
 import { decorate, computed, observable } from 'mobx';
 import { createContext } from 'react';
-import Database from './database/database';
+import Database from '../database/database';
+import UserHandler from './user';
+import TodosHandler from './todos';
 
 class TodoStore {
   currentUser = { username: '' };
   currentTodo = {};
   currentDate = new Date();
-  allTodos = [];
-  errorFlag = '';
+  todos = [];
   currentNotification = '';
   
-  firebase = new Database();
+  database = new Database();
+  userHandler = new UserHandler(this.database);
+  todosHandler = new TodosHandler(this.database);
 
   createAndSetUser = async (email, password, repeatPassword) => {
     try {
-      if (password !== repeatPassword) {
-        throw new Error('Passwords do not match');
-      }
-
-      const response = await this.firebase.loginUser(email, password);
-      this.currentUser = {
-        uid: response.uid, 
-        email: response.email,
-        refreshtoken: response.refreshtoken
-      };
-      window.localStorage.setItem('onejob-user', JSON.stringify(this.currentUser));
+      this.currentUser = await this.userHandler.createAndSetUser(email, password, repeatPassword);
     }
     catch (error) {
-      this.error = error.message;
+      this.setNotification(error.message);
     }
   } 
 
   loginAndSetUser = async (email, password) => {
     try {
-      const response = await this.firebase.loginUser(email, password);
-      this.currentUser = {
-        uid: response.uid, 
-        email: response.email,
-        refreshtoken: response.refreshtoken
-      };
-      window.localStorage.setItem('onejob-user', JSON.stringify(this.currentUser));
+      this.currentUser = await this.userHandler.loginAndSetUser(email, password);
     }
     catch (error) {
       this.setNotification(error.message);
-      this.errorFlag = true;
     }
   }
 
   logoutUser = async () => {
-    await this.firebase.logoutUser();
-    this.currentUser = {};
-    window.localStorage.clear();
+    this.currentUser = await this.userHandler.logoutUser();
   }
 
   getAndSetTodos = async () => {
-    this.allTodos = await this.makeTodosObjectToArray();
+    this.todos = await this.makeTodosObjectToArray();
   } 
 
   setCurrentTodo = () => {
-    const filteredTodos = this.allTodos.filter((todo) => todo.date === this.currentDate);
+    const filteredTodos = this.todos.filter((todo) => todo.date === this.currentDate);
     
     if (this.checkForTodo(this.currentDate)) {
       this.currentTodo = filteredTodos[0];
@@ -71,7 +55,7 @@ class TodoStore {
 
   checkForTodo = () => {
     let found = false;
-    this.allTodos.forEach((todo) => {
+    this.todos.forEach((todo) => {
       if (todo.date === this.currentDate) {
         found = true;
       }
@@ -81,7 +65,7 @@ class TodoStore {
   }
 
   makeTodosObjectToArray = async () => {
-    const todosObject = await this.firebase.getTodos(this.currentUser.uid);
+    const todosObject = await this.database.getTodos(this.currentUser.uid);
     let todos = [];
     const todosObjectKeys = Object.keys(todosObject);
 
@@ -93,7 +77,7 @@ class TodoStore {
   }
 
   saveTodo = async (todoData, key) => {
-    this.firebase.saveTodo(todoData, key);
+    this.database.saveTodo(todoData, key);
   }
 
   setUser = (user) => {
@@ -124,8 +108,8 @@ class TodoStore {
     return this.currentDate;
   }
 
-  get todos() {
-    return this.allTodos;
+  get allTodos() {
+    return this.todos;
   }
 
   get notificationIsVisible() {
@@ -135,10 +119,6 @@ class TodoStore {
   get notification() {
     return this.currentNotification;
   }
-
-  get error() {
-    return this.errorFlag;
-  }
 }
 
 decorate(TodoStore, {
@@ -147,14 +127,13 @@ decorate(TodoStore, {
   currentDate: observable,
   currentNotification: observable,
   notificationIsVisible: observable,
-  allTodos: observable,
+  todos: observable,
   user: computed,
   todo: computed,
   date: computed,
-  todos: computed,
+  allTodos: computed,
   notification: computed,
-  notificationIsVisible: computed,
-  error: computed
+  notificationIsVisible: computed
 });
 
 export default createContext(new TodoStore());

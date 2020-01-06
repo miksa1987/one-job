@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import MarginlessButton from '../common/MarginlessButton';
 import MarginlessInput from '../common/MarginlessInput';
-import TodoStore from '../../store';
+import TodoStore from '../../store/store';
 import useField from '../../hooks/useField';
 import { observer } from 'mobx-react-lite';
 

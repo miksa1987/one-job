@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import IconButton from '../common/IconButton';
-import TodoStore from '../../store';
+import TodoStore from '../../store/store';
 import { ReactComponent as LogoutSVG } from './log-out.svg';
 
 const BaseLayout = styled.div`

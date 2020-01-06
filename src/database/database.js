@@ -13,7 +13,7 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
-export default class Firebase {
+export default class Database {
   constructor() {
     firebase.initializeApp(firebaseConfig);
     this.auth = firebase.auth();

@@ -5,7 +5,7 @@ import BottomBar from './components/main/BottomBar';
 import DayCard from './components/day-card/DayCard';
 import Intro from './components/intro/Intro';
 import Notification from './components/notification/Notification';
-import TodoStore from './store';
+import TodoStore from './store/store';
 import { observer } from 'mobx-react-lite';
 
 const App = observer(() => {
