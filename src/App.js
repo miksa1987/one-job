@@ -3,6 +3,7 @@ import TopBar from './components/main/TopBar';
 import CenteredDiv from './components/common/CenteredDiv';
 import BottomBar from './components/main/BottomBar';
 import DayCard from './components/day-card/DayCard';
+import Main from './components/main/Main';
 import Intro from './components/intro/Intro';
 import Notification from './components/notification/Notification';
 import TodoStore from './store/store';
@@ -24,23 +25,18 @@ const App = observer(() => {
     await store.getAndSetTodos();
     await store.setCurrentTodo();
   }
-  
-  if (!store.user.uid) {
-    return (
-      <div>
-        <Intro />
-        <Notification message={store.notification} visible={store.notificationVisible} />
-      </div>
-    );
-  }
+
+  // Little hack to get loading indicator to function properly. 
+  const loading = store.loading;
 
   return (
-    <CenteredDiv>
+    <div>
       <TopBar />
-      <DayCard />
-      <BottomBar />
+      {store.user.uid ?
+        <Main /> 
+        : <Intro />}
       <Notification message={store.notification} visible={store.notificationIsVisible} />
-    </CenteredDiv>
+    </div>
   );
 });
 

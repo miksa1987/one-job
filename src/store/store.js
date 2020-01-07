@@ -10,38 +10,54 @@ class TodoStore {
   currentDate = new Date();
   todos = [];
   currentNotification = '';
+  isLoading = false;
   
   database = new Database();
   userHandler = new UserHandler(this.database);
   todosHandler = new TodosHandler(this.database);
 
-  createAndSetUser = async (email, password, repeatPassword) => {
+  handleOperation = async (operation) => {
     try {
-      this.currentUser = await this.userHandler.createAndSetUser(email, password, repeatPassword);
+      this.isLoading = true;
+      await operation();
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 50);
     }
     catch (error) {
       this.setNotification(error.message);
     }
+  }
+
+  createAndSetUser = async (email, password, repeatPassword) => {
+    await this.handleOperation(async () => {
+      this.currentUser = await this.userHandler.createAndSetUser(email, password, repeatPassword);
+    })
   } 
 
   loginAndSetUser = async (email, password) => {
-    try {
+    await this.handleOperation(async () => {
       this.currentUser = await this.userHandler.loginAndSetUser(email, password);
-    }
-    catch (error) {
-      this.setNotification(error.message);
-    }
+    });
   }
 
   logoutUser = async () => {
     this.currentUser = await this.userHandler.logoutUser();
+    this.setNotification('You have logged out.');
+  }
+
+  setUser = (user) => {
+    this.currentUser = user;
   }
 
   getAndSetTodos = async () => {
-    this.todos = await this.makeTodosObjectToArray();
+    await this.handleOperation(async () => {
+      this.todos = await this.makeTodosObjectToArray();
+    });
   } 
 
   setCurrentTodo = () => {
+    this.isLoading = true;
     const filteredTodos = this.todos.filter((todo) => todo.date === this.currentDate);
     
     if (this.checkForTodo(this.currentDate)) {
@@ -50,6 +66,7 @@ class TodoStore {
     else {
       this.currentTodo = {date: this.currentDate, task: '', reflect: ''};
     }
+    this.isLoading = false;
     return this.currentTodo;
   }
 
@@ -80,10 +97,6 @@ class TodoStore {
     this.database.saveTodo(todoData, key);
   }
 
-  setUser = (user) => {
-    this.currentUser = user;
-  }
-
   setCurrentDate = (date) => {
     this.currentDate = date;
   }
@@ -95,6 +108,8 @@ class TodoStore {
       this.setNotification('');
     }, 3000);
   }
+
+  setLoading = (loading) => this.isLoading = loading;
 
   get user() {
     return this.currentUser;
@@ -119,6 +134,10 @@ class TodoStore {
   get notification() {
     return this.currentNotification;
   }
+
+  get loading() {
+    return this.isLoading;
+  }
 }
 
 decorate(TodoStore, {
@@ -127,13 +146,15 @@ decorate(TodoStore, {
   currentDate: observable,
   currentNotification: observable,
   notificationIsVisible: observable,
+  isLoading: observable,
   todos: observable,
   user: computed,
   todo: computed,
   date: computed,
   allTodos: computed,
   notification: computed,
-  notificationIsVisible: computed
+  notificationIsVisible: computed,
+  loading: computed
 });
 
 export default createContext(new TodoStore());

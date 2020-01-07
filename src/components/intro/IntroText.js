@@ -3,8 +3,7 @@ import React from 'react';
 const IntroText = () => {
   return (
     <div>
-      <h2>One job app</h2>
-      <p>...---...</p>
+      <h3>You have one job. One job, and one job only. Do it well!</h3>
     </div>
   );
 }

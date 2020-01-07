@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import IconButton from '../common/IconButton';
 import TodoStore from '../../store/store';
 import { ReactComponent as LogoutSVG } from './log-out.svg';
+import Loading from './Loading';
 
 const BaseLayout = styled.div`
   display: grid;
   box-sizing: border-box;
-  grid-template: 100% / 1fr 4rem;
+  grid-template: 100% / 1fr 4rem 4rem;
   padding-left: 20px;
   align-items: center;
   background-color: #e5e9f0;
@@ -20,18 +21,15 @@ const BaseLayout = styled.div`
 
 const TopBar = () => {
   const store = React.useContext(TodoStore);
-
-  const logOut = () => {
-    store.logoutUser();
-    store.setNotification('You have logged out.');
-  }
   
   return (
     <BaseLayout>
-      <h1>One job app</h1>
-      <IconButton id='log-out' onClick={logOut}>
+      <h1>One job</h1>
+      {store.loading ? <Loading /> : <div />} 
+      {store.currentUser.uid ? <IconButton id='log-out' onClick={store.logoutUser}>
         <LogoutSVG color='#2e3440' />
       </IconButton>
+      : <div />}
     </BaseLayout>
   );
 }

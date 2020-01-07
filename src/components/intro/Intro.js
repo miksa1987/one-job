@@ -8,7 +8,8 @@ import NewUserform from './NewUser';
 const IntroBase = styled.div`
   display: grid;
   grid-template: 50% 50% / 100%;
-  height: 100vh;
+  margin-top: 4rem;
+  height: calc(100vh - 8rem);
   padding: 10px;
 `;
 

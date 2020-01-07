@@ -9,7 +9,7 @@ import { H2 } from '../common/Headers';
 
 const CardBase = styled.div`
   display: grid;
-  grid-template: 4rem 1fr 1fr 4rem / 100%;
+  grid-template: 4rem 1fr 1.5rem 1fr 4rem / 100%;
   justify-content: center;
   background-color: #eceff4;
   padding: 5px;
@@ -17,10 +17,20 @@ const CardBase = styled.div`
   flex-basis: 80%;
   height: 60vh;
   box-sizing: border-box;
+  animation: fade-in 1s;
 
   @media screen and (max-width: 600px) {
     margin-top: 25%;
     height: 70vh;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 `;
 
@@ -30,13 +40,10 @@ const DayCard = observer(() => {
   const [ timeHours, setTimeHours ] = useField('hours');
   const [ timeMinutes, setTimeMinutes ] = useField('minutes');
 
-
   const store = React.useContext(TodoStore);
   const currentTodo = store.todo;
 
-  console.log(store.todos)
-
-  const [todoTimeNotPassed, setTodoTimePassed] = React.useState(true);
+  const [todoTimeNotPassed, setTodoTimeNotPassed] = React.useState(true);
 
   React.useEffect(() => {
     if (currentTodo) {
@@ -60,11 +67,14 @@ const DayCard = observer(() => {
   const seeIfTodoTimeIsPassed = () => {
     const [ hours, minutes ] = getHoursAndMinutesFromTodo();
     const currentTime = moment();
-    const todoTimeString = `${currentTime.format('YYYY-MM-DD-')}-${hours}-${minutes}`;
+    const todoTimeString = `${store.date}-${hours}-${minutes}`;
     const todoTime = moment(todoTimeString, 'YYYY-MM-DD-H-m');
 
     if (currentTime.isAfter(todoTime)) {
-      setTodoTimePassed(false);
+      setTodoTimeNotPassed(false);
+    }
+    else {
+      setTodoTimeNotPassed(true);
     }
   }
 
@@ -91,6 +101,9 @@ const DayCard = observer(() => {
     <CardBase>
       <H2 id='one-job-text'>What is your one job today?</H2>
       <textarea id='todo-text' {...todoText} onBlur={saveTodo} />
+
+      {todoTimeNotPassed ? <div /> : <strong>Now, reflect on how you felt doing the job:</strong>}
+
       <textarea id='reflect-text' {...reflectText} readOnly={todoTimeNotPassed} onBlur={saveTodo} />      
       <SetTodoTime hours={timeHours} minutes={timeMinutes} saveTodo={saveTodo} />
     </CardBase>
