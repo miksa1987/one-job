@@ -44,7 +44,6 @@ const DayCard = observer(() => {
   const store = React.useContext(TodoStore);
   const currentTodo = store.todo;
 
-  console.log(store.todoTimePassed);
   React.useEffect(() => {
     if (currentTodo) {
       setTodoTexts();

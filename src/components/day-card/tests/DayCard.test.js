@@ -3,8 +3,8 @@ import { render, cleanup, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import DayCard from '../DayCard';
 
-import { saveTodoMock } from '../../../__mocks__/testHelper';
-jest.mock('../../../store');
+import { saveTodoMock } from '../../../store/__mocks__/testHelper';
+jest.mock('../../../store/store');
 
 describe('DayCard', () => {
   afterEach(cleanup);

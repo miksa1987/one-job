@@ -3,8 +3,8 @@ import { render, cleanup, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import DateChanger from '../DateChanger';
 
-import { setCurrentDateMock } from '../../../__mocks__/testHelper';
-jest.mock('../../../store');
+import { setCurrentDateMock } from '../../../store/__mocks__/testHelper';
+jest.mock('../../../store/store');
 
 let date = [];
 
@@ -52,7 +52,7 @@ describe('DateChanger', () => {
     expect(Number(day.value)).toBe(Number(date[0]) - 1);
   });
 
-  test('Date can be changed backward', () => {
+  test('Date can be changed to current', () => {
     const [ component, day, month, year ] = renderAndGetComponentAndDate();
 
     const previousDay = component.container.querySelector('#previous-day');

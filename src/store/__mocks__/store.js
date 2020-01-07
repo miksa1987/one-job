@@ -10,7 +10,7 @@ class TodoStore {
     time: [ 12, 0 ],
     key: '1'
   };
-  currentDate = '';
+  currentDate = '2019-11-13';
 
   setCurrentDate = (date) => {
     setCurrentDateMock();
@@ -19,8 +19,15 @@ class TodoStore {
 
   saveTodo = (newTodo, key) => {
     saveTodoMock();
-    this.currentTodo = { ...newTodo, key };
+    this.currentTodo = { ...newTodo, key: '1' };
   }
+
+  setNextDayDate = () => this.currentDate = '2019-11-14';
+  setPreviousDayDate = () => this.currentDate = '2019-11-12';
+  setCurrentDayDate = () => this.currentDate = '2019-11-13';
+  
+  seeIfTodoTimeIsPassed = () => {}
+  setNotification = () => {}
 
   get user() {
     return {};
@@ -31,11 +38,15 @@ class TodoStore {
   }
 
   get date() {
-    return '2019-11-13';
+    return this.currentDate;
   }
 
   get allTodos() {
     return [ this.currentTodo, this.currentTodo, this.currentTodos ];
+  }
+
+  get todoTimePassed() {
+    return true;
   }
 }
 
