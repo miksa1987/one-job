@@ -26,7 +26,7 @@ const TopBar = () => {
     <BaseLayout>
       <h1>One job</h1>
       {store.loading ? <Loading /> : <div />} 
-      {store.currentUser.uid ? <IconButton id='log-out' onClick={store.logoutUser}>
+      {store.user.uid ? <IconButton id='log-out' onClick={store.logoutUser}>
         <LogoutSVG color='#2e3440' />
       </IconButton>
       : <div />}

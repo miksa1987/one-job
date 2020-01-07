@@ -1,4 +1,8 @@
-export default class UserHandler {
+import { decorate, observable } from 'mobx';
+
+class UserHandler {
+  currentUser = { username: '' };
+
   constructor(database) {
     this.database = database;
   }
@@ -16,7 +20,7 @@ export default class UserHandler {
     };
 
     window.localStorage.setItem('onejob-user', JSON.stringify(currentUser));
-    return currentUser;
+    this.currentUser = currentUser;
   } 
 
   loginAndSetUser = async (email, password) => {
@@ -28,17 +32,27 @@ export default class UserHandler {
     };
 
     window.localStorage.setItem('onejob-user', JSON.stringify(currentUser));
-    return currentUser;
+    this.currentUser = currentUser;
   }
 
   logoutUser = async () => {
     await this.database.logoutUser();
     window.localStorage.clear();
 
-    return {};
+    this.currentUser = {};
   }
 
   setUser = (user) => {
-    return user;
+    this.currentUser = user;
+  }
+
+  getCurrentUser = () => {
+    return this.currentUser;
   }
 }
+
+decorate(UserHandler, {
+  currentUser: observable
+});
+
+export default UserHandler;

@@ -1,8 +1,5 @@
 import React from 'react';
 import TopBar from './components/main/TopBar';
-import CenteredDiv from './components/common/CenteredDiv';
-import BottomBar from './components/main/BottomBar';
-import DayCard from './components/day-card/DayCard';
 import Main from './components/main/Main';
 import Intro from './components/intro/Intro';
 import Notification from './components/notification/Notification';
@@ -11,6 +8,7 @@ import { observer } from 'mobx-react-lite';
 
 const App = observer(() => {
   const store = React.useContext(TodoStore);
+  console.log(store.user)
 
   React.useEffect(() => {
     const storedUser = window.localStorage.getItem('onejob-user');

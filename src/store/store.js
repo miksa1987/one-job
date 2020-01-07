@@ -6,9 +6,7 @@ import TodosHandler from './todos';
 import DateHandler from './date';
 
 class TodoStore {
-  currentUser = { username: '' };
   currentTodo = {};
-  currentDate = new Date();
   todos = [];
   currentNotification = '';
   isLoading = false;
@@ -22,9 +20,7 @@ class TodoStore {
     try {
       this.isLoading = true;
       await operation();
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 50);
+      this.isLoading = false;
     }
     catch (error) {
       this.setNotification(error.message);
@@ -33,23 +29,23 @@ class TodoStore {
 
   createAndSetUser = async (email, password, repeatPassword) => {
     await this.handleOperation(async () => {
-      this.currentUser = await this.userHandler.createAndSetUser(email, password, repeatPassword);
+      await this.userHandler.createAndSetUser(email, password, repeatPassword);
     })
   } 
 
   loginAndSetUser = async (email, password) => {
     await this.handleOperation(async () => {
-      this.currentUser = await this.userHandler.loginAndSetUser(email, password);
+      await this.userHandler.loginAndSetUser(email, password);
     });
   }
 
   logoutUser = async () => {
-    this.currentUser = await this.userHandler.logoutUser();
+    await this.userHandler.logoutUser();
     this.setNotification('You have logged out.');
   }
 
   setUser = (user) => {
-    this.currentUser = user;
+    this.userHandler.setUser(user);
   }
 
   getAndSetTodos = async () => {
@@ -84,7 +80,7 @@ class TodoStore {
   }
 
   makeTodosObjectToArray = async () => {
-    const todosObject = await this.database.getTodos(this.currentUser.uid);
+    const todosObject = await this.database.getTodos(this.userHandler.getCurrentUser().uid);
     let todos = [];
     const todosObjectKeys = Object.keys(todosObject);
 
@@ -115,7 +111,8 @@ class TodoStore {
   setLoading = (loading) => this.isLoading = loading;
 
   get user() {
-    return this.currentUser;
+    return this.userHandler.getCurrentUser();
+    //return this.currentUser;
   }
   
   get todo() {
@@ -146,7 +143,6 @@ class TodoStore {
 decorate(TodoStore, {
   currentUser: observable,
   currentTodo: observable,
-  currentDate: observable,
   currentNotification: observable,
   notificationIsVisible: observable,
   isLoading: observable,

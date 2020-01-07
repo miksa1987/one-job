@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { decorate, observable, computed } from 'mobx';
+import { decorate, observable } from 'mobx';
 
 class DateHandler {
   currentDate = moment().format('YYYY-MM-DD');
