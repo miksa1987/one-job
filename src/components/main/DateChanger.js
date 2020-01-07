@@ -18,44 +18,23 @@ const DateChanger = observer(() => {
   const [year, setYear] = useField('text');
 
   const store = React.useContext(TodoStore);
-
+  
   React.useEffect(() => {
-    const dateNow = moment().format('YYYY-MM-DD');
-    setDate(dateNow);
-  }, []);
-
-  const previousDay = () => {
-    const previousDayDate = moment(store.date, 'YYYY-MM-DD').add(-1, 'day').format('YYYY-MM-DD');
-    setDate(previousDayDate);
-  }
-
-  const nextDay = () => {
-    const nextDayDate = moment(store.date, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD');
-    setDate(nextDayDate);
-  }
-
-  const currentDay = () => {
-    const currentDayDate = moment().format('YYYY-MM-DD');
-    setDate(currentDayDate);
-  }
-
-  const setDate = (date) => {
-    store.setCurrentDate(date);
-    const splittedDate = date.split('-');
+    const splittedDate = store.date.split('-');
     
     setYear(splittedDate[0]);
     setMonth(splittedDate[1]);
     setDay(splittedDate[2]);
-  }
+  }, [store.date]);
 
   return (
     <DateChangerBase>
-      <MarginlessButton id='previous-day' onClick={previousDay}>{'<'}</MarginlessButton>
+      <MarginlessButton id='previous-day' onClick={store.setPreviousDayDate}>{'<'}</MarginlessButton>
       <MarginlessInput id='date-day' {...day} />
       <MarginlessInput id='date-month' {...month} />
       <MarginlessInput id='date-year' {...year} />
-      <MarginlessButton id='next-day' onClick={nextDay}>{'>'}</MarginlessButton>
-      <MarginlessButton id='current-date' onClick={currentDay}>Current date</MarginlessButton>
+      <MarginlessButton id='next-day' onClick={store.setNextDayDate}>{'>'}</MarginlessButton>
+      <MarginlessButton id='current-date' onClick={store.setCurrentDayDate}>Current date</MarginlessButton>
     </DateChangerBase>
   );
 });

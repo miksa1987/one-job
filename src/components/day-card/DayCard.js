@@ -17,7 +17,7 @@ const CardBase = styled.div`
   flex-basis: 80%;
   height: 60vh;
   box-sizing: border-box;
-  animation: fade-in 1s;
+  animation: fade-in 0.75s;
 
   @media screen and (max-width: 600px) {
     margin-top: 25%;
@@ -42,7 +42,6 @@ const DayCard = observer(() => {
 
   const store = React.useContext(TodoStore);
   const currentTodo = store.todo;
-
   const [todoTimeNotPassed, setTodoTimeNotPassed] = React.useState(true);
 
   React.useEffect(() => {
@@ -97,6 +96,11 @@ const DayCard = observer(() => {
     store.saveTodo(newTodo, key);
   }
 
+  const saveReflect = () => {
+    saveTodo();
+    store.setNotification('Good job!');
+  }
+
   return (
     <CardBase>
       <H2 id='one-job-text'>What is your one job today?</H2>
@@ -104,7 +108,7 @@ const DayCard = observer(() => {
 
       {todoTimeNotPassed ? <div /> : <strong>Now, reflect on how you felt doing the job:</strong>}
 
-      <textarea id='reflect-text' {...reflectText} readOnly={todoTimeNotPassed} onBlur={saveTodo} />      
+      <textarea id='reflect-text' {...reflectText} readOnly={todoTimeNotPassed} onBlur={saveReflect} />      
       <SetTodoTime hours={timeHours} minutes={timeMinutes} saveTodo={saveTodo} />
     </CardBase>
   );

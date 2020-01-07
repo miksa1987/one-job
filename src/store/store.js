@@ -3,6 +3,7 @@ import { createContext } from 'react';
 import Database from '../database/database';
 import UserHandler from './user';
 import TodosHandler from './todos';
+import DateHandler from './date';
 
 class TodoStore {
   currentUser = { username: '' };
@@ -15,6 +16,7 @@ class TodoStore {
   database = new Database();
   userHandler = new UserHandler(this.database);
   todosHandler = new TodosHandler(this.database);
+  dateHandler = new DateHandler();
 
   handleOperation = async (operation) => {
     try {
@@ -58,22 +60,22 @@ class TodoStore {
 
   setCurrentTodo = () => {
     this.isLoading = true;
-    const filteredTodos = this.todos.filter((todo) => todo.date === this.currentDate);
-    
-    if (this.checkForTodo(this.currentDate)) {
+    const date = this.dateHandler.getCurrentDate();
+    const filteredTodos = this.todos.filter((todo) => todo.date === date);
+    console.log(date)
+    if (this.checkForTodo(date)) {
       this.currentTodo = filteredTodos[0];
     }
     else {
-      this.currentTodo = {date: this.currentDate, task: '', reflect: ''};
+      this.currentTodo = {date: date, task: '', reflect: ''};
     }
     this.isLoading = false;
-    return this.currentTodo;
   }
 
   checkForTodo = () => {
     let found = false;
     this.todos.forEach((todo) => {
-      if (todo.date === this.currentDate) {
+      if (todo.date === this.dateHandler.getCurrentDate()) {
         found = true;
       }
     });
@@ -97,9 +99,10 @@ class TodoStore {
     this.database.saveTodo(todoData, key);
   }
 
-  setCurrentDate = (date) => {
-    this.currentDate = date;
-  }
+  setCurrentDate = (date) => this.dateHandler.setDate(date);
+  setNextDayDate = () => this.dateHandler.nextDay();
+  setPreviousDayDate = () => this.dateHandler.previousDay();
+  setCurrentDayDate = () => this.dateHandler.currentDay();
 
   setNotification = (message) => {
     this.currentNotification = message;
@@ -120,7 +123,7 @@ class TodoStore {
   }
 
   get date() {
-    return this.currentDate;
+    return this.dateHandler.getCurrentDate();
   }
 
   get allTodos() {
