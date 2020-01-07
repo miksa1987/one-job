@@ -13,12 +13,22 @@ const IntroBase = styled.div`
   padding: 10px;
 `;
 
-const Intro = (props) => {
+const Upper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+`;
+
+const Intro = () => {
   const [ view, setView ] = React.useState('buttons');
 
   return (
     <IntroBase>
-      <IntroText />
+      <Upper>
+        <IntroText />
+        <img src='splash.png' alt='One job splash' />
+      </Upper>
       { view === 'buttons' && <Buttons setView={setView} /> }
       { view === 'login' && <Loginform setView={setView} /> }
       { view === 'newuser' && <NewUserform setView={setView} /> }
