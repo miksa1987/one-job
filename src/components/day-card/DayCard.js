@@ -43,7 +43,6 @@ const DayCard = observer(() => {
 
   const store = React.useContext(TodoStore);
   const currentTodo = store.todo;
-  const [todoTimeNotPassed, setTodoTimeNotPassed] = React.useState(true);
 
   console.log(store.todoTimePassed);
   React.useEffect(() => {
