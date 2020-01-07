@@ -3,4 +3,4 @@ export const getHoursAndMinutesFromTodo = (currentTodo) => {
   const minutes = currentTodo.time ? currentTodo.time[1] : 0;
 
   return [ hours, minutes ];
-}
+};

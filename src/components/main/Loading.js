@@ -14,6 +14,6 @@ const Loading = () => {
       <LoadingSVG />
     </CenteredDiv>
   );
-}
+};
 
 export default Loading;

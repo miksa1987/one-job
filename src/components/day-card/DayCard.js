@@ -55,13 +55,13 @@ const DayCard = observer(() => {
   const setTodoTexts = () => {
     setTodoText(currentTodo.task);
     setReflectText(currentTodo.reflect);
-  }
+  };
 
   const setReminderTimeFromTodo = () => {  
     const [ hours, minutes ] = getHoursAndMinutesFromTodo(currentTodo);
     setTimeHours(hours);
     setTimeMinutes(minutes);
-  }
+  };
 
   const saveTodo = () => {
     const newTodo = {
@@ -69,11 +69,11 @@ const DayCard = observer(() => {
       reflect: reflectText.value,
       date: moment(store.date, 'YYYY-MM-DD').format('YYYY-MM-DD'),
       time: [timeHours.value, timeMinutes.value]
-    }
-    const key = currentTodo.key || null
+    };
+    const key = currentTodo.key || null;
     
     store.saveTodo(newTodo, key);
-  }
+  };
 
   const saveReflect = () => {
     saveTodo();
@@ -81,11 +81,11 @@ const DayCard = observer(() => {
     if (store.todoTimePassed) {
       store.setNotification('Good job!');
     }
-  }
+  };
 
   return (
     <CardBase>
-      <H2 id='one-job-text'>What is your one job today?</H2>
+      <h2 id='one-job-text'>What is your one job today?</h2>
       <textarea id='todo-text' {...todoText} onBlur={saveTodo} />
 
       {store.todoTimePassed ? <strong>Now, reflect on how you felt doing the job:</strong> : <div />}

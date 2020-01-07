@@ -27,4 +27,4 @@ describe('Loginform', () => {
       expect(setView.mock.calls.length).toBe(1);
     }, 50);
   });
-})
+});

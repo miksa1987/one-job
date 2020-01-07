@@ -14,7 +14,7 @@ const renderAndGetComponentAndDate = () => {
   const year = component.container.querySelector('#date-year');
 
   return [ component, day, month, year ];
-}
+};
 
 describe('DateChanger', () => {
   afterEach(cleanup);

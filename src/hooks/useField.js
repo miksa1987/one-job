@@ -18,9 +18,9 @@ export default (type) => {
     }
 
     setValue(value);
-  }
+  };
 
   const set = (newValue) => setValue(newValue);
 
   return [ { type: returnedType, value, onChange }, set ];
-}
+};

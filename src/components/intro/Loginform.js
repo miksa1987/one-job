@@ -20,7 +20,7 @@ const Loginform = (props) => {
     setEmail('');
     setPassword('');
     props.setView('buttons');
-  }
+  };
 
   return (
     <Form onSubmit={loginUser}>
@@ -29,6 +29,6 @@ const Loginform = (props) => {
       <button id='log-in'>Log in</button>
     </Form>
   );
-}
+};
 
 export default Loginform;

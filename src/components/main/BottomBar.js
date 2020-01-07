@@ -20,6 +20,6 @@ const BottomBar = (props) => {
       <DateChanger />
     </Base>
   );
-}
+};
 
 export default BottomBar;

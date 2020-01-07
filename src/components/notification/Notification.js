@@ -31,7 +31,7 @@ const Notification = (props) => {
     <NotificationBase message={props.message}>
       <p>{props.message}</p>
     </NotificationBase>
-  )
-}
+  );
+};
 
 export default Notification;

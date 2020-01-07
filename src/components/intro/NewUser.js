@@ -19,7 +19,7 @@ const NewUserform = (props) => {
     setPassword('');
     setRepeatPassWord('');
     props.setView('buttons');
-  }
+  };
 
 
   return (
@@ -32,6 +32,6 @@ const NewUserform = (props) => {
       </button>
     </Form>
   );
-}
+};
 
 export default NewUserform;

@@ -34,6 +34,6 @@ const Intro = () => {
       { view === 'newuser' && <NewUserform setView={setView} /> }
     </IntroBase>
   );
-}
+};
 
 export default Intro;

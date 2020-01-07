@@ -23,6 +23,6 @@ const SetTodoTime = (props) => {
       </TodoTimeBase>
     </CenteredDiv>
   );
-}
+};
 
 export default SetTodoTime;

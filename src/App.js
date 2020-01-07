@@ -21,7 +21,7 @@ const App = observer(() => {
   const checkTodos = async () => {
     await store.getAndSetTodos();
     await store.setCurrentTodo();
-  }
+  };
 
   // Little hack to get loading indicator to function properly. 
   const loading = store.loading;

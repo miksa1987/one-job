@@ -10,6 +10,6 @@ const Main = () => {
       <BottomBar />
     </CenteredDiv>
   );
-}
+};
 
 export default Main;

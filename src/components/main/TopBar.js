@@ -29,9 +29,9 @@ const TopBar = () => {
       {store.user.uid ? <IconButton id='log-out' onClick={store.logoutUser}>
         <LogoutSVG color='#2e3440' />
       </IconButton>
-      : <div />}
+        : <div />}
     </BaseLayout>
   );
-}
+};
 
 export default TopBar;

@@ -15,6 +15,6 @@ const Buttons = (props) => {
       <button onClick={() => props.setView('newuser')} id='new-user'>New user</button>
     </ButtonBase>
   );
-}
+};
 
 export default Buttons;
