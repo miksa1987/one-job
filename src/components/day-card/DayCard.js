@@ -6,6 +6,7 @@ import useField from '../../hooks/useField';
 import moment from 'moment';
 import { observer } from 'mobx-react-lite';
 import { H2 } from '../common/Headers';
+import { getHoursAndMinutesFromTodo } from '../../util/todoHelper';
 
 const CardBase = styled.div`
   display: grid;
@@ -59,16 +60,9 @@ const DayCard = observer(() => {
   }
 
   const setReminderTimeFromTodo = () => {  
-    const [ hours, minutes ] = getHoursAndMinutesFromTodo();
+    const [ hours, minutes ] = getHoursAndMinutesFromTodo(currentTodo);
     setTimeHours(hours);
     setTimeMinutes(minutes);
-  }
-
-  const getHoursAndMinutesFromTodo = () => {
-    const hours = currentTodo.time ? currentTodo.time[0] : 12;
-    const minutes = currentTodo.time ? currentTodo.time[1] : 0;
-
-    return [ hours, minutes ];
   }
 
   const saveTodo = () => {
@@ -86,7 +80,7 @@ const DayCard = observer(() => {
   const saveReflect = () => {
     saveTodo();
 
-    if (!todoTimeNotPassed) {
+    if (store.todoTimePassed) {
       store.setNotification('Good job!');
     }
   }

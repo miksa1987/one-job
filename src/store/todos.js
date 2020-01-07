@@ -1,4 +1,5 @@
 import { observable, decorate } from 'mobx';
+import { getHoursAndMinutesFromTodo } from '../util/todoHelper';
 import moment from 'moment';
 
 class TodosHandler {
@@ -53,15 +54,8 @@ class TodosHandler {
     this.database.saveTodo(todoData, key);
   }
 
-  getHoursAndMinutesFromTodo = () => {
-    const hours = this.currentTodo.time ? this.currentTodo.time[0] : 12;
-    const minutes = this.currentTodo.time ? this.currentTodo.time[1] : 0;
-
-    return [ hours, minutes ];
-  }
-
   seeIfTodoTimeIsPassed = (date) => {
-    const [ hours, minutes ] = this.getHoursAndMinutesFromTodo();
+    const [ hours, minutes ] = getHoursAndMinutesFromTodo(this.currentTodo);
     const currentTime = moment();
     const todoTimeString = `${date}-${hours}-${minutes}`;
     const todoTime = moment(todoTimeString, 'YYYY-MM-DD-H-m');
