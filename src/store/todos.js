@@ -1,32 +1,33 @@
-export default class TodosHandler {
+import { observable, decorate } from 'mobx';
+
+class TodosHandler {
   todos = [];
+  currentTodo = {};
   
   constructor(database) {
     this.database = database;
   }
 
-  getAndSetTodos = async () => {
-    return await this.makeTodosObjectToArray();
-  }
+  getAndSetTodos = async (userId) => {
+    this.todos = await this.makeTodosObjectToArray(userId);
+  } 
 
-  setCurrentTodo = () => {
+  setCurrentTodo = (date) => {
     this.isLoading = true;
-    const filteredTodos = this.todos.filter((todo) => todo.date === this.currentDate);
-    
-    if (this.checkForTodo(this.currentDate)) {
+    const filteredTodos = this.todos.filter((todo) => todo.date === date);
+    if (this.checkForTodo(date)) {
       this.currentTodo = filteredTodos[0];
     }
     else {
-      this.currentTodo = {date: this.currentDate, task: '', reflect: ''};
+      this.currentTodo = {date: date, task: '', reflect: ''};
     }
     this.isLoading = false;
-    return this.currentTodo;
   }
 
-  checkForTodo = () => {
+  checkForTodo = (date) => {
     let found = false;
     this.todos.forEach((todo) => {
-      if (todo.date === this.currentDate) {
+      if (todo.date === date) {
         found = true;
       }
     });
@@ -34,8 +35,8 @@ export default class TodosHandler {
     return found;
   }
 
-  makeTodosObjectToArray = async () => {
-    const todosObject = await this.database.getTodos(this.currentUser.uid);
+  makeTodosObjectToArray = async (userId) => {
+    const todosObject = await this.database.getTodos(userId);
     let todos = [];
     const todosObjectKeys = Object.keys(todosObject);
 
@@ -50,4 +51,13 @@ export default class TodosHandler {
     this.database.saveTodo(todoData, key);
   }
 
+  getCurrentTodo = () => this.currentTodo;
+  getAllTodos = () => this.todos;
 }
+
+decorate(TodosHandler, {
+  currentTodo: observable,
+  todos: observable
+});
+
+export default TodosHandler;

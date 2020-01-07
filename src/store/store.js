@@ -6,8 +6,6 @@ import TodosHandler from './todos';
 import DateHandler from './date';
 
 class TodoStore {
-  currentTodo = {};
-  todos = [];
   currentNotification = '';
   isLoading = false;
   
@@ -50,50 +48,21 @@ class TodoStore {
 
   getAndSetTodos = async () => {
     await this.handleOperation(async () => {
-      this.todos = await this.makeTodosObjectToArray();
+      await this.todosHandler.getAndSetTodos(this.userHandler.getCurrentUser().uid);
     });
   } 
 
   setCurrentTodo = () => {
-    this.isLoading = true;
-    const date = this.dateHandler.getCurrentDate();
-    const filteredTodos = this.todos.filter((todo) => todo.date === date);
-    console.log(date)
-    if (this.checkForTodo(date)) {
-      this.currentTodo = filteredTodos[0];
-    }
-    else {
-      this.currentTodo = {date: date, task: '', reflect: ''};
-    }
-    this.isLoading = false;
+    this.handleOperation(() => {
+      this.todosHandler.setCurrentTodo(this.dateHandler.getCurrentDate());
+    });
   }
 
   checkForTodo = () => {
-    let found = false;
-    this.todos.forEach((todo) => {
-      if (todo.date === this.dateHandler.getCurrentDate()) {
-        found = true;
-      }
-    });
-    
-    return found;
+    return this.todosHandler(this.dateHandler.getCurrentDate());
   }
 
-  makeTodosObjectToArray = async () => {
-    const todosObject = await this.database.getTodos(this.userHandler.getCurrentUser().uid);
-    let todos = [];
-    const todosObjectKeys = Object.keys(todosObject);
-
-    todosObjectKeys.forEach((key) => {
-      todos.push({ ...todosObject[key], key: key });
-    })
-
-    return todos;
-  }
-
-  saveTodo = async (todoData, key) => {
-    this.database.saveTodo(todoData, key);
-  }
+  saveTodo = async (todoData, key) => this.todosHandler.saveTodo(todoData, key);
 
   setCurrentDate = (date) => this.dateHandler.setDate(date);
   setNextDayDate = () => this.dateHandler.nextDay();
@@ -112,11 +81,10 @@ class TodoStore {
 
   get user() {
     return this.userHandler.getCurrentUser();
-    //return this.currentUser;
   }
   
   get todo() {
-    return this.currentTodo;
+    return this.todosHandler.getCurrentTodo();
   }
 
   get date() {
@@ -124,7 +92,7 @@ class TodoStore {
   }
 
   get allTodos() {
-    return this.todos;
+    return this.todosHandler.getAllTodos();
   }
 
   get notificationIsVisible() {
