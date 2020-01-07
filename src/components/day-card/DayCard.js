@@ -44,11 +44,12 @@ const DayCard = observer(() => {
   const currentTodo = store.todo;
   const [todoTimeNotPassed, setTodoTimeNotPassed] = React.useState(true);
 
+  console.log(store.todoTimePassed);
   React.useEffect(() => {
     if (currentTodo) {
       setTodoTexts();
       setReminderTimeFromTodo();
-      seeIfTodoTimeIsPassed();
+      store.seeIfTodoTimeIsPassed();
     }
   }, [currentTodo]);
 
@@ -61,20 +62,6 @@ const DayCard = observer(() => {
     const [ hours, minutes ] = getHoursAndMinutesFromTodo();
     setTimeHours(hours);
     setTimeMinutes(minutes);
-  }
-
-  const seeIfTodoTimeIsPassed = () => {
-    const [ hours, minutes ] = getHoursAndMinutesFromTodo();
-    const currentTime = moment();
-    const todoTimeString = `${store.date}-${hours}-${minutes}`;
-    const todoTime = moment(todoTimeString, 'YYYY-MM-DD-H-m');
-
-    if (currentTime.isAfter(todoTime)) {
-      setTodoTimeNotPassed(false);
-    }
-    else {
-      setTodoTimeNotPassed(true);
-    }
   }
 
   const getHoursAndMinutesFromTodo = () => {
@@ -98,7 +85,10 @@ const DayCard = observer(() => {
 
   const saveReflect = () => {
     saveTodo();
-    store.setNotification('Good job!');
+
+    if (!todoTimeNotPassed) {
+      store.setNotification('Good job!');
+    }
   }
 
   return (
@@ -106,9 +96,9 @@ const DayCard = observer(() => {
       <H2 id='one-job-text'>What is your one job today?</H2>
       <textarea id='todo-text' {...todoText} onBlur={saveTodo} />
 
-      {todoTimeNotPassed ? <div /> : <strong>Now, reflect on how you felt doing the job:</strong>}
+      {store.todoTimePassed ? <strong>Now, reflect on how you felt doing the job:</strong> : <div />}
 
-      <textarea id='reflect-text' {...reflectText} readOnly={todoTimeNotPassed} onBlur={saveReflect} />      
+      <textarea id='reflect-text' {...reflectText} readOnly={!store.todoTimePassed} onBlur={saveReflect} />
       <SetTodoTime hours={timeHours} minutes={timeMinutes} saveTodo={saveTodo} />
     </CardBase>
   );

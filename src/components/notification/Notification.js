@@ -26,6 +26,7 @@ const NotificationBase = styled.div`
 `;
 
 const Notification = (props) => {
+
   return (
     <NotificationBase message={props.message}>
       <p>{props.message}</p>

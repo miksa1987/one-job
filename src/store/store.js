@@ -7,6 +7,7 @@ import DateHandler from './date';
 
 class TodoStore {
   currentNotification = '';
+  notificationVisible = false;
   isLoading = false;
   
   database = new Database();
@@ -28,12 +29,14 @@ class TodoStore {
   createAndSetUser = async (email, password, repeatPassword) => {
     await this.handleOperation(async () => {
       await this.userHandler.createAndSetUser(email, password, repeatPassword);
+      this.setNotification('You have logged in.');
     })
   } 
 
   loginAndSetUser = async (email, password) => {
     await this.handleOperation(async () => {
       await this.userHandler.loginAndSetUser(email, password);
+      this.setNotification('You have logged in.');
     });
   }
 
@@ -64,6 +67,8 @@ class TodoStore {
 
   saveTodo = async (todoData, key) => this.todosHandler.saveTodo(todoData, key);
 
+  seeIfTodoTimeIsPassed = () => this.todosHandler.seeIfTodoTimeIsPassed(this.dateHandler.getCurrentDate());
+
   setCurrentDate = (date) => this.dateHandler.setDate(date);
   setNextDayDate = () => this.dateHandler.nextDay();
   setPreviousDayDate = () => this.dateHandler.previousDay();
@@ -73,7 +78,7 @@ class TodoStore {
     this.currentNotification = message;
     
     setTimeout(() => {
-      this.setNotification('');
+      this.currentNotification = '';
     }, 3000);
   }
 
@@ -82,13 +87,17 @@ class TodoStore {
   get user() {
     return this.userHandler.getCurrentUser();
   }
+
+  get date() {
+    return this.dateHandler.getCurrentDate();
+  }
   
   get todo() {
     return this.todosHandler.getCurrentTodo();
   }
 
-  get date() {
-    return this.dateHandler.getCurrentDate();
+  get todoTimePassed() {
+    return this.todosHandler.getTodoTimePassed();
   }
 
   get allTodos() {
@@ -112,12 +121,13 @@ decorate(TodoStore, {
   currentUser: observable,
   currentTodo: observable,
   currentNotification: observable,
-  notificationIsVisible: observable,
+  notificationVisible: observable,
   isLoading: observable,
   todos: observable,
   user: computed,
-  todo: computed,
   date: computed,
+  todo: computed,
+  todoTimePassed: computed,
   allTodos: computed,
   notification: computed,
   notificationIsVisible: computed,

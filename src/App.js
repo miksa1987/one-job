@@ -8,7 +8,6 @@ import { observer } from 'mobx-react-lite';
 
 const App = observer(() => {
   const store = React.useContext(TodoStore);
-  console.log(store.user)
 
   React.useEffect(() => {
     const storedUser = window.localStorage.getItem('onejob-user');
@@ -33,7 +32,7 @@ const App = observer(() => {
       {store.user.uid ?
         <Main /> 
         : <Intro />}
-      <Notification message={store.notification} visible={store.notificationIsVisible} />
+      <Notification message={store.notification} />
     </div>
   );
 });

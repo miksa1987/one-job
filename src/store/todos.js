@@ -1,8 +1,10 @@
 import { observable, decorate } from 'mobx';
+import moment from 'moment';
 
 class TodosHandler {
   todos = [];
   currentTodo = {};
+  todoTimePassed = false;
   
   constructor(database) {
     this.database = database;
@@ -51,13 +53,36 @@ class TodosHandler {
     this.database.saveTodo(todoData, key);
   }
 
+  getHoursAndMinutesFromTodo = () => {
+    const hours = this.currentTodo.time ? this.currentTodo.time[0] : 12;
+    const minutes = this.currentTodo.time ? this.currentTodo.time[1] : 0;
+
+    return [ hours, minutes ];
+  }
+
+  seeIfTodoTimeIsPassed = (date) => {
+    const [ hours, minutes ] = this.getHoursAndMinutesFromTodo();
+    const currentTime = moment();
+    const todoTimeString = `${date}-${hours}-${minutes}`;
+    const todoTime = moment(todoTimeString, 'YYYY-MM-DD-H-m');
+
+    if (todoTime.isAfter(currentTime)) {
+      this.todoTimePassed = false;
+    }
+    else {
+      this.todoTimePassed = true;
+    }
+  }
+
   getCurrentTodo = () => this.currentTodo;
   getAllTodos = () => this.todos;
+  getTodoTimePassed = () => this.todoTimePassed;
 }
 
 decorate(TodosHandler, {
   currentTodo: observable,
-  todos: observable
+  todos: observable,
+  todoTimePassed: observable
 });
 
 export default TodosHandler;
