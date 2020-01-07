@@ -23,7 +23,6 @@ const NewUserform = (props) => {
 
 
   return (
-    <div>
     <Form onSubmit={createUser}>
       <input id='email' placeholder='Your e-mail' {...email} />
       <input id='password' placeholder='Desired password' {...password} />
@@ -32,7 +31,6 @@ const NewUserform = (props) => {
         Create new user
       </button>
     </Form>
-    </div>
   );
 }
 
