@@ -1,19 +1,19 @@
 import React from 'react';
 import Form from '../common/Form';
 import useField from '../../hooks/useField';
-import TodoStore from '../../store/store';
+import { connect } from 'react-redux';
+import { loginAndSetUser } from '../../actions/user';
+import { setNotification } from '../../actions/notification';
 
 const Loginform = (props) => {
   const [ email, setEmail ] = useField('text');
   const [ password, setPassword ] = useField('password');
 
-  const store = React.useContext(TodoStore);
-
   const loginUser = async (event) => {
     event.preventDefault();
 
-    store.loginAndSetUser(email.value, password.value);
-    store.setNotification('Logged in.');
+    props.loginAndSetUser(email.value, password.value);
+    props.setNotification('Logged in.');
 
     setEmail('');
     setPassword('');
@@ -29,4 +29,4 @@ const Loginform = (props) => {
   );
 }
 
-export default Loginform;
+export default connect(null, { loginAndSetUser, setNotification})(Loginform);

@@ -1,43 +1,53 @@
 import React from 'react';
 import TopBar from './components/main/TopBar';
-import CenteredDiv from './components/common/CenteredDiv';
-import BottomBar from './components/main/BottomBar';
-import DayCard from './components/day-card/DayCard';
 import Main from './components/main/Main';
 import Intro from './components/intro/Intro';
 import Notification from './components/notification/Notification';
-import TodoStore from './store/store';
-import { observer } from 'mobx-react-lite';
+import { connect } from 'react-redux';
+import { getAndSetTodos, setCurrentTodo } from './actions/todos';
+import { setUser } from './actions/user';
 
-const App = observer(() => {
-  const store = React.useContext(TodoStore);
-
+const App = (props) => {
   React.useEffect(() => {
-    const storedUser = window.localStorage.getItem('onejob-user');
+    const storedUser = JSON.parse(window.localStorage.getItem('onejob-user'));
 
     if (storedUser) {
-      store.setUser(JSON.parse(storedUser));
-      checkTodos();
+      props.setUser(storedUser);
+      checkTodos(storedUser);
     }
-  }, [store.date]);
+  }, [props.date]);
+  console.log(props.date)
+  console.log(props.notification)
 
-  const checkTodos = async () => {
-    await store.getAndSetTodos();
-    await store.setCurrentTodo();
+  const checkTodos = (user) => {
+    props.getAndSetTodos(user);
+    props.setCurrentTodo(props.todos.all);
   }
-
-  // Little hack to get loading indicator to function properly. 
-  const loading = store.loading;
 
   return (
     <div>
       <TopBar />
-      {store.user.uid ?
+      {props.user.uid ?
         <Main /> 
         : <Intro />}
-      <Notification message={store.notification} visible={store.notificationIsVisible} />
+      <Notification message={props.notification.message} visible={props.notification.visible} />
     </div>
   );
-});
+}
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+    todos: state.todos,
+    date: state.date,
+    notification: state.notification
+  }
+}
+
+const mapDispatchToProps = {
+  getAndSetTodos,
+  setCurrentTodo,
+  setUser
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

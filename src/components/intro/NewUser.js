@@ -1,19 +1,19 @@
 import React from 'react';
 import Form from '../common/Form';
 import useField from '../../hooks/useField';
-import TodoStore from '../../store/store';
+import { connect } from 'react-redux';
+import { createAndSetUser } from '../../actions/user';
+import { setNotification } from '../../actions/notification';
 
 const NewUserform = (props) => {
   const [ email, setEmail ] = useField('text');
   const [ password, setPassword ] = useField('password');
   const [ repeatPassword, setRepeatPassWord ] = useField('password');
 
-  const store = React.useContext(TodoStore);
-
   const createUser = async (event) => {
     event.preventDefault();
-    store.createAndSetUser(email.value, password.value, repeatPassword.value);
-    store.setNotification('User created. You are now logged in.');
+    props.createAndSetUser(email.value, password.value, repeatPassword.value);
+    props.setNotification('User created. You are now logged in.');
 
     setEmail('');
     setPassword('');
@@ -36,4 +36,4 @@ const NewUserform = (props) => {
   );
 }
 
-export default NewUserform;
+export default connect(null, { createAndSetUser, setNotification })(NewUserform);

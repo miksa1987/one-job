@@ -8,7 +8,7 @@ export default class UserHandler {
       throw new Error('Passwords do not match');
     }
 
-    const response = await this.database.loginUser(email, password);
+    const response = await this.database.createNewUser(email, password);
     const currentUser = {
       uid: response.uid, 
       email: response.email,

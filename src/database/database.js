@@ -13,16 +13,13 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
-export default class Database {
-  constructor() {
-    firebase.initializeApp(firebaseConfig);
-    this.auth = firebase.auth();
-    this.database = firebase.database();
-  }
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const database = firebase.database();
 
-  createNewUser = async (email, password) => {
-    await this.auth.createUserWithEmailAndPassword(email, password);
-    const user = this.auth.currentUser;
+const createNewUser = async (email, password) => {
+    await auth.createUserWithEmailAndPassword(email, password);
+    const user = auth.currentUser;
 
     this.database.ref(`/users/${user.uid}`).set({
       email: user.email,
@@ -32,40 +29,47 @@ export default class Database {
     return user;
   }
 
-  loginUser = async (email, password) => {
-    await this.auth.signInWithEmailAndPassword(email, password);
+const loginUser = async (email, password) => {
+    await auth.signInWithEmailAndPassword(email, password);
 
-    if (this.auth.currentUser === null) {
+    if (auth.currentUser === null) {
       throw new Error('Wrong email or password!')
     }
-    return this.auth.currentUser;
+    return auth.currentUser;
   }
 
-  logoutUser = async () => {
-    this.auth.signOut();
+const logoutUser = async () => {
+    auth.signOut();
   }
 
-  sendPasswordToEmail = async (email) => {
-    this.auth.sendPasswordResetEmail(email);
+const sendPasswordToEmail = async (email) => {
+    auth.sendPasswordResetEmail(email);
   }
-
-  saveTodo = async (todoData, key) => {
-    const currentUser = this.auth.currentUser;
-    const newTodoKey = key ? key : await this.database.ref('/todos').push().key;
+const saveTodo = async (todoData, key) => {
+    const currentUser = auth.currentUser;
+    const newTodoKey = key ? key : await database.ref('/todos').push().key;
     
     const update = {
       [`/todos/${newTodoKey}`]: { ...todoData, user: currentUser.uid }
     };
 
-    return this.database.ref().update(update);
+    return database.ref().update(update);
   }
 
-  getTodos = async (userId) => {
-    const todosSnapshot = await this.database.ref('todos')
+ const getTodos = async (userId) => {
+    const todosSnapshot = await database.ref('todos')
       .orderByChild('user')
       .equalTo(userId)
       .once('value');
 
     return todosSnapshot.val();
   }
+
+export default {
+  createNewUser,
+  loginUser,
+  logoutUser,
+  sendPasswordToEmail,
+  saveTodo,
+  getTodos
 }

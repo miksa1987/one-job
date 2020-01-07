@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import SetTodoTime from './SetTodoTime';
-import TodoStore from '../../store/store';
 import useField from '../../hooks/useField';
 import moment from 'moment';
 import { observer } from 'mobx-react-lite';
+import { connect } from 'react-redux';
+import { saveTodo } from '../../actions/todos'
 import { H2 } from '../common/Headers';
 
 const CardBase = styled.div`
@@ -24,17 +25,15 @@ const CardBase = styled.div`
   }
 `;
 
-const DayCard = observer(() => {
+const DayCard = (props) => {
   const [ todoText, setTodoText ] = useField('text');
   const [ reflectText, setReflectText ] = useField('text');
   const [ timeHours, setTimeHours ] = useField('hours');
   const [ timeMinutes, setTimeMinutes ] = useField('minutes');
 
+  const currentTodo = props.todos.current;
 
-  const store = React.useContext(TodoStore);
-  const currentTodo = store.todo;
-
-  console.log(store.todos)
+  console.log(props.todos.current)
 
   const [todoTimeNotPassed, setTodoTimePassed] = React.useState(true);
 
@@ -79,12 +78,12 @@ const DayCard = observer(() => {
     const newTodo = {
       task: todoText.value,
       reflect: reflectText.value,
-      date: moment(store.date, 'YYYY-MM-DD').format('YYYY-MM-DD'),
+      date: moment(props.date, 'YYYY-MM-DD').format('YYYY-MM-DD'),
       time: [timeHours.value, timeMinutes.value]
     }
     const key = currentTodo.key || null
     
-    store.saveTodo(newTodo, key);
+    props.saveTodo(newTodo, key);
   }
 
   return (
@@ -95,6 +94,12 @@ const DayCard = observer(() => {
       <SetTodoTime hours={timeHours} minutes={timeMinutes} saveTodo={saveTodo} />
     </CardBase>
   );
-});
+}
 
-export default DayCard;
+const mapStateToProps = (state) => {
+  return {
+    todos: state.todos
+  }
+}
+
+export default connect(mapStateToProps, { saveTodo })(DayCard);

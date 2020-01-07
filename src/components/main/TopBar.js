@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import IconButton from '../common/IconButton';
-import TodoStore from '../../store/store';
 import { ReactComponent as LogoutSVG } from './log-out.svg';
+import { connect } from 'react-redux';
+import { logoutUser } from '../../actions/user';
 import Loading from './Loading';
 
 const BaseLayout = styled.div`
@@ -19,14 +20,12 @@ const BaseLayout = styled.div`
   width: 100%;
 `;
 
-const TopBar = () => {
-  const store = React.useContext(TodoStore);
-  
+const TopBar = (props) => {
   return (
     <BaseLayout>
       <h1>One job app</h1>
-      {store.loading ? <Loading /> : <div />} 
-      {store.currentUser.uid ? <IconButton id='log-out' onClick={store.logoutUser}>
+      {props.loading ? <Loading /> : <div />} 
+      {props.user.uid ? <IconButton id='log-out' onClick={props.logoutUser}>
         <LogoutSVG color='#2e3440' />
       </IconButton>
       : <div />}
@@ -34,4 +33,11 @@ const TopBar = () => {
   );
 }
 
-export default TopBar;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+    loading: state.loading
+  }
+}
+
+export default connect(mapStateToProps, { logoutUser })(TopBar);

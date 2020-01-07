@@ -3,21 +3,20 @@ import styled from 'styled-components';
 import moment from 'moment';
 import MarginlessButton from '../common/MarginlessButton';
 import MarginlessInput from '../common/MarginlessInput';
-import TodoStore from '../../store/store';
 import useField from '../../hooks/useField';
-import { observer } from 'mobx-react-lite';
+import { connect } from 'react-redux';
+import { setDate } from '../../actions/date';
+import { setCurrentTodo } from '../../actions/todos';
 
 const DateChangerBase = styled.div`
   display: grid;
   grid-template: 2rem / 3rem 3rem 3rem 6rem 3rem 6rem;
 `;
 
-const DateChanger = observer(() => {
+const DateChanger = (props) => {
   const [day, setDay] = useField('text');
   const [month, setMonth] = useField('text');
   const [year, setYear] = useField('text');
-
-  const store = React.useContext(TodoStore);
 
   React.useEffect(() => {
     const dateNow = moment().format('YYYY-MM-DD');
@@ -25,12 +24,12 @@ const DateChanger = observer(() => {
   }, []);
 
   const previousDay = () => {
-    const previousDayDate = moment(store.date, 'YYYY-MM-DD').add(-1, 'day').format('YYYY-MM-DD');
+    const previousDayDate = moment(props.date, 'YYYY-MM-DD').add(-1, 'day').format('YYYY-MM-DD');
     setDate(previousDayDate);
   }
 
   const nextDay = () => {
-    const nextDayDate = moment(store.date, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD');
+    const nextDayDate = moment(props.date, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD');
     setDate(nextDayDate);
   }
 
@@ -40,7 +39,8 @@ const DateChanger = observer(() => {
   }
 
   const setDate = (date) => {
-    store.setCurrentDate(date);
+    props.setDate(date);
+    props.setCurrentTodo(props.todos, date);
     const splittedDate = date.split('-');
     
     setYear(splittedDate[0]);
@@ -58,6 +58,14 @@ const DateChanger = observer(() => {
       <MarginlessButton id='current-date' onClick={currentDay}>Current date</MarginlessButton>
     </DateChangerBase>
   );
-});
+}
 
-export default DateChanger;
+
+const mapStateToProps = (state) => {
+  return {
+    date: state.date,
+    todos: state.todos.all
+  }
+}
+
+export default connect(mapStateToProps, { setDate, setCurrentTodo })(DateChanger);
