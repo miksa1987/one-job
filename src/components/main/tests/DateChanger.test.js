@@ -3,7 +3,6 @@ import { render, cleanup, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import DateChanger from '../DateChanger';
 
-import { setCurrentDateMock } from '../../../store/__mocks__/testHelper';
 jest.mock('../../../store/store');
 
 let date = [];
@@ -26,6 +25,8 @@ describe('DateChanger', () => {
     expect(day).toBeDefined();
     expect(month).toBeDefined();
     expect(year).toBeDefined();
+
+    expect(component).toMatchSnapshot();
 
     date = [ 
       Number(day.value), 

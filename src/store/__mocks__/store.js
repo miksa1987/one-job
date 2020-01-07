@@ -1,6 +1,12 @@
 import { decorate, computed, observable } from 'mobx';
 import { createContext } from 'react';
-import { saveTodoMock, setCurrentDateMock } from './testHelper';
+import { 
+  saveTodoMock, 
+  setCurrentDateMock,
+  loginAndSetUserMock,
+  createAndSetUserMock,
+  setNotificationMock 
+} from './testHelper';
 
 class TodoStore {
   currentTodo = {
@@ -27,7 +33,10 @@ class TodoStore {
   setCurrentDayDate = () => this.currentDate = '2019-11-13';
   
   seeIfTodoTimeIsPassed = () => {}
-  setNotification = () => {}
+  setNotification = () => setNotificationMock();
+
+  loginAndSetUser = () => loginAndSetUserMock();
+  createAndSetUser = () => createAndSetUserMock();
 
   get user() {
     return {};
