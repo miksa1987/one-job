@@ -6,7 +6,7 @@ describe('Login and new user functionality', () => {
   it('Login and new user buttons are seen', () => {
     cy.contains('Log in');
     cy.contains('New user');
-    cy.contains('One job app');
+    cy.contains('One job');
   });
 
   it('Create new user', () => {

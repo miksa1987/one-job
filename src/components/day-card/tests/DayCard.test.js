@@ -18,6 +18,7 @@ describe('DayCard', () => {
     expect(oneJobText).toHaveTextContent('What is your one job today?');
     expect(todoText).toHaveTextContent('test');
     expect(reflectText).toHaveTextContent('test');
+    expect(component).toMatchSnapshot();
   });
 
   test('Todo text gets saved(saveTodo is called)', () => {

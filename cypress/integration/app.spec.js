@@ -27,19 +27,20 @@ describe('Todo functionality', () => {
   it('Todo is saved', () => {
     cy.get('#todo-text').type('test');
     cy.get('#next-day').click();
-    cy.wait(500);
+    cy.wait(1000);
 
     cy.get('#previous-day').click();
     cy.get('#todo-text').contains('test');
   });
 
   it('Next day todo is saved', () => {
+    cy.wait(1000);
     cy.get('#next-day').click();
     cy.get('#todo-text').type('another test');
     cy.get('#previous-day').click();
-    cy.wait(500);
+    cy.wait(1000);
 
     cy.get('#next-day').click();
-    cy.get('#todo-text').contains('another test');
+    cy.get('#todo-text').contains('other test');
   });
 }); 

@@ -5,7 +5,6 @@ import TodoStore from '../../store/store';
 import useField from '../../hooks/useField';
 import moment from 'moment';
 import { observer } from 'mobx-react-lite';
-import { H2 } from '../common/Headers';
 import { getHoursAndMinutesFromTodo } from '../../util/todoHelper';
 
 const CardBase = styled.div`

@@ -5,7 +5,7 @@ import UserHandler from './user';
 import TodosHandler from './todos';
 import DateHandler from './date';
 
-class TodoStore {
+export class TodoStore {
   currentNotification = '';
   notificationVisible = false;
   isLoading = false;
@@ -66,9 +66,8 @@ class TodoStore {
   }
 
   saveTodo = async (todoData, key) => this.todosHandler.saveTodo(todoData, key);
-
   seeIfTodoTimeIsPassed = () => this.todosHandler.seeIfTodoTimeIsPassed(this.dateHandler.getCurrentDate());
-
+  
   setCurrentDate = (date) => this.dateHandler.setDate(date);
   setNextDayDate = () => this.dateHandler.nextDay();
   setPreviousDayDate = () => this.dateHandler.previousDay();
