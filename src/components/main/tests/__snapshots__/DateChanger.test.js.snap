@@ -17,19 +17,19 @@ Object {
         <input
           class="sc-bwzfXH hEtCYp"
           id="date-day"
-          type="text"
+          readonly=""
           value="13"
         />
         <input
           class="sc-bwzfXH hEtCYp"
           id="date-month"
-          type="text"
+          readonly=""
           value="11"
         />
         <input
           class="sc-bwzfXH hEtCYp"
           id="date-year"
-          type="text"
+          readonly=""
           value="2019"
         />
         <button
@@ -60,19 +60,19 @@ Object {
       <input
         class="sc-bwzfXH hEtCYp"
         id="date-day"
-        type="text"
+        readonly=""
         value="13"
       />
       <input
         class="sc-bwzfXH hEtCYp"
         id="date-month"
-        type="text"
+        readonly=""
         value="11"
       />
       <input
         class="sc-bwzfXH hEtCYp"
         id="date-year"
-        type="text"
+        readonly=""
         value="2019"
       />
       <button
