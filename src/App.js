@@ -13,7 +13,10 @@ const App = observer(() => {
     const storedUser = window.localStorage.getItem('onejob-user');
 
     if (storedUser) {
-      store.setUser(JSON.parse(storedUser));
+      if (!store.user.uid) {
+        store.setUser(JSON.parse(storedUser));
+      }
+      
       checkTodos();
     }
   }, [store.date]);
