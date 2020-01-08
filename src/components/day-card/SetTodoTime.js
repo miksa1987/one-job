@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import propTypes from 'prop-types';
+import { useFieldPropType } from '../../hooks/useField';
 import CenteredDiv from '../common/CenteredDiv';
 import MarginlessButton from '../common/MarginlessButton';
 import MarginlessInput from '../common/MarginlessInput';
@@ -23,6 +25,12 @@ const SetTodoTime = (props) => {
       </TodoTimeBase>
     </CenteredDiv>
   );
+};
+
+SetTodoTime.propTypes = {
+  hours: useFieldPropType,
+  minutes: useFieldPropType,
+  saveTodo: propTypes.func.isRequired
 };
 
 export default SetTodoTime;

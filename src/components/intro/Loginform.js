@@ -2,6 +2,7 @@ import React from 'react';
 import Form from '../common/Form';
 import useField from '../../hooks/useField';
 import TodoStore from '../../store/store';
+import propTypes from 'prop-types';
 
 const Loginform = (props) => {
   const [ email, setEmail ] = useField('text');
@@ -29,6 +30,10 @@ const Loginform = (props) => {
       <button id='log-in'>Log in</button>
     </Form>
   );
+};
+
+Loginform.propTypes = {
+  setView: propTypes.func.isRequired
 };
 
 export default Loginform;

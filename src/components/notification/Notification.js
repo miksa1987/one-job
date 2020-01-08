@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import propTypes from 'prop-types';
 
 const NotificationBase = styled.div`
   display: ${props => props.message !== '' ? 'flex' : 'none'};
@@ -26,12 +27,15 @@ const NotificationBase = styled.div`
 `;
 
 const Notification = (props) => {
-
   return (
     <NotificationBase message={props.message}>
       <p>{props.message}</p>
     </NotificationBase>
   );
+};
+
+Notification.propTypes = {
+  message: propTypes.string.isRequired
 };
 
 export default Notification;

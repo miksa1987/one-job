@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import propTypes from 'prop-types';
 
 const ButtonBase = styled.div`
   display: flex;
@@ -15,6 +16,10 @@ const Buttons = (props) => {
       <button onClick={() => props.setView('newuser')} id='new-user'>New user</button>
     </ButtonBase>
   );
+};
+
+Buttons.propTypes = {
+  setView: propTypes.func.isRequired
 };
 
 export default Buttons;

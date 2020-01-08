@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import propTypes from 'prop-types';
 
 export default (type) => {
   const [ value, setValue ] = useState('');
@@ -24,3 +25,9 @@ export default (type) => {
 
   return [ { type: returnedType, value, onChange }, set ];
 };
+
+export const useFieldPropType = propTypes.shape({
+  type: propTypes.oneOfType([propTypes.string, propTypes.number]).isRequired,
+  value: propTypes.oneOfType([propTypes.string, propTypes.number]).isRequired,
+  onChange: propTypes.func.isRequired
+});

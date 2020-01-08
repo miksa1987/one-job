@@ -6,4 +6,5 @@ export default styled.div`
   align-items: center;
   margin: 10px;
   height: 100%;
+  cursor: pointer;
 `;

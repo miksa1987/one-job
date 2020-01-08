@@ -2,6 +2,7 @@ import React from 'react';
 import Form from '../common/Form';
 import useField from '../../hooks/useField';
 import TodoStore from '../../store/store';
+import propTypes from 'prop-types';
 
 const NewUserform = (props) => {
   const [ email, setEmail ] = useField('text');
@@ -32,6 +33,10 @@ const NewUserform = (props) => {
       </button>
     </Form>
   );
+};
+
+NewUserform.propTypes = {
+  setView: propTypes.func.isRequired
 };
 
 export default NewUserform;
